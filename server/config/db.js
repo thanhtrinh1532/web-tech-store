@@ -14,7 +14,7 @@ const mysql = require('mysql2');
        console.error('Database connection failed:', err);
        return;
      }
-     console.log('Connected to MySQL database');
+     console.log('Kết nối csdl thành công');
    });
 
    module.exports = db;
