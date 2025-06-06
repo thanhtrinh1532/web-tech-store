@@ -1,0 +1,143 @@
+.cart-page {
+  padding: 40px 0;
+  min-height: 60vh;
+  background: #f8f9fa;
+}
+
+.cart-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.cart-items {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.cart-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 80px;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 2px solid #eee;
+  font-weight: bold;
+  color: #666;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.cart-header > div {
+  text-align: center;
+}
+
+.cart-header .product-col {
+  text-align: left;
+}
+
+.cart-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.left-actions,
+.right-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.continue-shopping,
+.update-cart,
+.clear-cart {
+  padding: 12px 24px;
+  border: 2px solid #333;
+  background: transparent;
+  color: #333;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-transform: uppercase;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.continue-shopping:hover,
+.update-cart:hover {
+  background: #333;
+  color: white;
+}
+
+.clear-cart {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.clear-cart:hover {
+  background: #dc3545;
+  color: white;
+}
+
+/* Container chung */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .cart-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cart-page {
+    padding: 20px 0;
+  }
+  
+  .cart-items {
+    padding: 20px;
+  }
+  
+  .cart-header {
+    display: none; /* Ẩn header trên mobile */
+  }
+  
+  .cart-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .left-actions,
+  .right-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .continue-shopping,
+  .update-cart,
+  .clear-cart {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 15px;
+  }
+  
+  .left-actions,
+  .right-actions {
+    flex-direction: column;
+  }
+}
