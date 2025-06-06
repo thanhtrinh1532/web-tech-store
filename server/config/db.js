@@ -1,20 +1,27 @@
 const mysql = require('mysql2');
-   const dotenv = require('dotenv');
-   dotenv.config();
+require('dotenv').config();
 
-   const db = mysql.createConnection({
-     host: process.env.DB_HOST,
-     user: process.env.DB_USER,
-     password: process.env.DB_PASSWORD,
-     database: process.env.DB_NAME
-   });
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || '127.0.0.1',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'shop_banhang',
+  charset: 'utf8',
+  timezone: '+00:00', // Phù hợp với thiết lập SQL của bạn
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
-   db.connect((err) => {
-     if (err) {
-       console.error('Database connection failed:', err);
-       return;
-     }
-     console.log('Connected to MySQL database');
-   });
+// Kiểm tra kết nối
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error('Error connecting to MySQL:', err);
+    return;
+  }
+  console.log('Connected to MySQL database');
+  connection.release();
+});
 
-   module.exports = db;
+// Export pool để sử dụng promise
+module.exports = pool.promise();
