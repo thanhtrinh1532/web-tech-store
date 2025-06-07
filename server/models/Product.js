@@ -1,47 +1,58 @@
-const db = require('../config/db');
+const { sequelize } = require('../config/db.js'); // Đảm bảo đường dẫn đúng đến file cấu hình Sequelize của bạn
+const { DataTypes } = require('sequelize');
 
-const Product = {
-  // Lấy tất cả sản phẩm
-  getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM products');
-    return rows;
+if (!sequelize || typeof sequelize.define !== 'function') {
+  throw new Error('Sequelize instance is not properly configured in db.js');
+}
+
+const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
-
-  // Lấy sản phẩm theo ID
-  getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM products WHERE id = ?', [id]);
-    return rows[0];
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
   },
-
-  // Lấy sản phẩm theo danh mục
-  getByCategory: async (category_id) => {
-    const [rows] = await db.query('SELECT * FROM products WHERE category_id = ?', [category_id]);
-    return rows;
+  description: {
+    type: DataTypes.TEXT, // Sử dụng TEXT cho mô tả dài
+    allowNull: true // Mô tả có thể rỗng
   },
-
-  // Thêm sản phẩm
-  create: async (name, description, thumbnail, price, quantity, category_id, view) => {
-    const [result] = await db.query(
-      'INSERT INTO products (name, description, thumbnail, price, quantity, category_id, view) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [name, description, thumbnail, price, quantity, category_id, view]
-    );
-    return { id: result.insertId, name, description, thumbnail, price, quantity, category_id, view };
+  thumbnail: {
+    type: DataTypes.STRING,
+    allowNull: true // Thumbnail có thể rỗng
   },
-
-  // Cập nhật sản phẩm
-  update: async (id, name, description, thumbnail, price, quantity, category_id, view) => {
-    const [result] = await db.query(
-      'UPDATE products SET name = ?, description = ?, thumbnail = ?, price = ?, quantity = ?, category_id = ?, view = ? WHERE id = ?',
-      [name, description, thumbnail, price, quantity, category_id, view, id]
-    );
-    return result.affectedRows > 0;
+  price: {
+    type: DataTypes.DOUBLE, // DECIMAL cho giá tiền, 10 chữ số tổng, 2 chữ số sau dấu phẩy
+    allowNull: false
   },
-
-  // Xóa sản phẩm
-  delete: async (id) => {
-    const [result] = await db.query('DELETE FROM products WHERE id = ?', [id]);
-    return result.affectedRows > 0;
+  quantity: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0 // Giá trị mặc định nếu không được cung cấp
   },
-};
+  category_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    // Nếu bạn có model Category, bạn có thể thêm khóa ngoại ở đây
+    references: {
+      model: 'Category', // Tên model của Category
+      key: 'id',
+    },
+    // onUpdate: 'CASCADE',
+    onDelete: 'SET NULL' // Hoặc 'RESTRICT', 'CASCADE' tùy thuộc vào logic nghiệp vụ của bạn
+  },
+  view: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0 // Số lượt xem mặc định là 0
+  }
+}, {
+  tableName: 'products', // Tên bảng trong cơ sở dữ liệu
+  timestamps: false, // Sequelize sẽ tự động quản lý createdAt và updatedAt
+  createdAt: 'created_at', // Map createdAt của Sequelize sang cột created_at trong DB
 
-module.exports = Product;
+});
+
+module.exports = { Product };

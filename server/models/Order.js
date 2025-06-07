@@ -1,47 +1,90 @@
-const db = require('../config/db');
+const { sequelize } = require('../config/db');
+const { DataTypes } = require('sequelize');
 
-const Order = {
+// Kiểm tra cấu hình Sequelize
+if (!sequelize || typeof sequelize.define !== 'function') {
+  throw new Error('Sequelize instance is not properly configured in db.js');
+}
+
+// Định nghĩa model Order
+const Order = sequelize.define('Order', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  code: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true // Đảm bảo code không rỗng
+    }
+  },
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true // Đảm bảo status không rỗng
+    }
+  },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true // Đảm bảo user_id là số nguyên
+    }
+  }
+}, {
+  tableName: 'orders', // Tên bảng trong cơ sở dữ liệu
+  timestamps: false // Tắt tự động thêm createdAt, updatedAt
+});
+
+// Các phương thức tương tự như code gốc
+const OrderMethods = {
   // Lấy tất cả đơn hàng
   getAll: async () => {
-    const [rows] = await db.query('SELECT * FROM orders');
-    return rows;
+    const orders = await Order.findAll();
+    return orders.map(order => order.toJSON());
   },
 
   // Lấy đơn hàng theo ID
   getById: async (id) => {
-    const [rows] = await db.query('SELECT * FROM orders WHERE id = ?', [id]);
-    return rows[0];
+    const order = await Order.findByPk(id);
+    return order ? order.toJSON() : null;
   },
 
   // Lấy đơn hàng theo user_id
   getByUserId: async (user_id) => {
-    const [rows] = await db.query('SELECT * FROM orders WHERE user_id = ?', [user_id]);
-    return rows;
+    const orders = await Order.findAll({
+      where: { user_id }
+    });
+    return orders.map(order => order.toJSON());
   },
 
   // Thêm đơn hàng
   create: async (code, status, user_id) => {
-    const [result] = await db.query(
-      'INSERT INTO orders (code, status, user_id) VALUES (?, ?, ?)',
-      [code, status, user_id]
-    );
-    return { id: result.insertId, code, status, user_id };
+    const order = await Order.create({ code, status, user_id });
+    return order.toJSON();
   },
 
   // Cập nhật đơn hàng
   update: async (id, code, status) => {
-    const [result] = await db.query(
-      'UPDATE orders SET code = ?, status = ? WHERE id = ?',
-      [code, status, id]
+    const [affectedRows] = await Order.update(
+      { code, status },
+      { where: { id } }
     );
-    return result.affectedRows > 0;
+    return affectedRows > 0;
   },
 
   // Xóa đơn hàng
   delete: async (id) => {
-    const [result] = await db.query('DELETE FROM orders WHERE id = ?', [id]);
-    return result.affectedRows > 0;
-  },
+    const affectedRows = await Order.destroy({ where: { id } });
+    return affectedRows > 0;
+  }
 };
 
-module.exports = Order;
+// Gộp model và methods để xuất
+module.exports = {
+  Order,
+  ...OrderMethods
+};
