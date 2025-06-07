@@ -1,0 +1,137 @@
+.checkout-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.checkout-header {
+  margin-bottom: 30px;
+}
+
+.checkout-header h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.breadcrumb {
+  color: #666;
+  font-size: 14px;
+}
+
+.breadcrumb a {
+  color: #ff6b6b;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.checkout-content {
+  margin-top: 40px;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.empty-checkout {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border-radius: 10px;
+  margin: 40px auto;
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.empty-checkout h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.empty-checkout p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.return-home-btn {
+  background: #ff6b6b;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  display: inline-block;
+  transition: background 0.3s;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.return-home-btn:hover {
+  background: #ff5252;
+}
+
+.view-cart-btn {
+  background: #28a745;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  display: inline-block;
+  transition: background 0.3s;
+  text-decoration: none;
+}
+
+.view-cart-btn:hover {
+  background: #218838;
+}
+
+.order-success {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 10px;
+  margin: 40px auto;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  font-size: 60px;
+  margin-bottom: 20px;
+}
+
+.order-success h2 {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.order-success p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.success-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .checkout-page {
+    padding: 10px;
+  }
+
+  .success-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}

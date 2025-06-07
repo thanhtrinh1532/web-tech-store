@@ -1,32 +1,16 @@
+import { Link } from "react-router-dom"
 import "./EmptyCart.css"
 
 const EmptyCart = () => {
-  const handleReturnToShop = () => {
-    // Logic để quay lại trang shop
-    console.log("Quay lại trang shop")
-  }
-
   return (
     <div className="empty-cart">
-      {/* Icon giỏ hàng trống */}
-      <div className="empty-cart-icon">
-        <div className="cart-outline">
-          <div className="cart-handle"></div>
-          <div className="cart-body">
-            <div className="sad-face">☹️</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Thông báo */}
-      <h2>Your cart is currently empty.</h2>
-      <p>Before proceed to checkout you must add some products to shopping cart.</p>
-      <p>You will find a lot of interesting products on our "Shop" page.</p>
-
-      {/* Nút quay lại shop */}
-      <button className="return-to-shop" onClick={handleReturnToShop}>
-        RETURN TO SHOP
-      </button>
+      <div className="empty-cart-icon">🛒</div>
+      <h2>Giỏ hàng của bạn đang trống</h2>
+      <p>Trước khi tiến hành thanh toán, bạn cần thêm một số sản phẩm vào giỏ hàng.</p>
+      <p>Bạn sẽ tìm thấy rất nhiều sản phẩm thú vị trên trang "Cửa hàng" của chúng tôi.</p>
+      <Link to="/" className="return-to-shop-btn">
+        QUAY LẠI CỬA HÀNG
+      </Link>
     </div>
   )
 }
