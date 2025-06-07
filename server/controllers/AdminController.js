@@ -21,10 +21,9 @@ const AdminController = {
       const orders = await Order.getAll();
       res.status(200).json(orders);
     } catch (error) {
-      res.status(500).json({ error: 'Error fetching orders', details: error.message });
+      res.status(500).json({ error: 'Lỗi check order', details: error.message });
     }
   },
-
   // Lấy tất cả sản phẩm
   getAllProducts: async (req, res) => {
     try {
@@ -34,7 +33,6 @@ const AdminController = {
       res.status(500).json({ error: 'Error fetching products', details: error.message });
     }
   },
-
   // Cập nhật người dùng
   updateUser: async (req, res) => {
     try {
