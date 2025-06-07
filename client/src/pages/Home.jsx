@@ -51,7 +51,7 @@ const Home = () => {
       <Header />
       <div className="banner">
         <div className="banner-content">
-          <h2>Ưu đãi đặc biệt - Giảm ngay 20% đơn hàng đầu tiên!</h2>
+          <h2>ƯU ĐÃI ĐẶC BIỆT - GIẢM NGAY 20% ĐƠN HÀNG ĐẦU TIÊN!</h2>
           <button className="shop-now">Mua sắm ngay</button>
         </div>
       </div>

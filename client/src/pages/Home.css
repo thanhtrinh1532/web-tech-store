@@ -6,6 +6,7 @@
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .banner {
@@ -68,7 +69,8 @@
 
 .product-list {
   padding: 40px 20px;
-  flex: 1 0 auto;
+  flex: 1 0 auto; /* Đảm bảo lấp đầy chiều cao còn lại */
+  overflow-x: hidden;
 }
 
 .breadcrumbs {
@@ -93,6 +95,8 @@
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
   width: 100%;
+  max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+  margin: 0 auto; /* Căn giữa */
 }
 
 .product-item {
