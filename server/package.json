@@ -16,6 +16,7 @@
           "mysql2": "^3.14.1",
           "nodemailer": "^6.9.14",
           "openai": "^4.56.0",
+          "sequelize": "^6.37.7",
           "tech-store-server": "file:"
      },
      "devDependencies": {

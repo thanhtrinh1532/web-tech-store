@@ -1,8 +1,8 @@
-// server/routes/contactRoutes.js
 const express = require('express');
 const router = express.Router();
 const ContactController = require('../controllers/ContactController');
 
+// contactRoutes.js
 router.get('/', ContactController.getAllContacts);
 router.get('/:id', ContactController.getContactById);
 router.post('/', ContactController.createContact);

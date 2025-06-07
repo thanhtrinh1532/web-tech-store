@@ -1,6 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const db = require('./config/db');
+const { sequelize } = require('./config/db');
 const cors = require('cors');
 
 // Load environment variables
@@ -9,10 +9,10 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
-// // Middleware
-// app.use(cors()); // Enable CORS for cross-origin requests
-// app.use(express.json()); // Parse JSON request bodies
-// app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const productRoutes = require('./routes/productRoutes');
@@ -27,33 +27,37 @@ const aiRoutes = require('./routes/aiRoutes');
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
-// app.use('/api/cart', cartRoutes);
-// app.use('/api/contact', contactRoutes);
-// app.use('/api/admin', adminRoutes);
-// app.use('/api/ai', aiRoutes);
-
-// // Basic route for testing
-// app.get('/', (req, res) => {
-//   res.json({ message: 'Welcome to the Tech Store API' });
-// });
-
-// // Error handling middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).json({ error: 'Something went wrong!', details: err.message });
-// });
-
-// Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.use('/api/cart', cartRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
+app.get('/test', (req, res) => res.json({ message: 'Test route working' }));
+// Basic route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the Tech Store API' });
 });
 
-// Test database connection
-db.query('SELECT 1 + 1 AS solution')
-  .then(([rows]) => {
-    console.log('Database connection test successful:', rows[0].solution);
-  })
-  .catch(err => {
-    console.error('Database connection test failed:', err);
-  });
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!', details: err.message });
+});
+
+const initApp = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    const { Contact } = require('./models/Contact');
+    await Contact.sync({ alter: true });
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running at: http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database or sync models:', error);
+  }
+};
+
+
+
+initApp();
