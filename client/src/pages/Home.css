@@ -69,18 +69,9 @@
 
 .product-list {
   padding: 40px 20px;
-  flex: 1 0 auto; /* Đảm bảo lấp đầy chiều cao còn lại */
+  flex: 1 0 auto;
   overflow-x: hidden;
-}
-
-.breadcrumbs {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-.breadcrumbs span {
-  margin: 0 5px;
+  margin-bottom: 60px; 
 }
 
 .product-list h3 {
@@ -90,13 +81,35 @@
   color: #333;
 }
 
+/* === CSS MỚI CHO BANNER SALE Ở GIỮA === */
+.sale-banner-middle {
+    background-color: #e91e63;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin: 50px 0; /* Tạo khoảng cách trên và dưới */
+    border-radius: 8px;
+}
+
+.sale-banner-middle h2 {
+    margin: 0 0 10px 0;
+    font-size: 2em;
+    text-transform: uppercase;
+}
+
+.sale-banner-middle p {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 20px;
   width: 100%;
-  max-width: 1200px; /* Giới hạn chiều rộng tối đa */
-  margin: 0 auto; /* Căn giữa */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .product-item {
@@ -169,7 +182,7 @@
 }
 
 .cart-container {
-  height: 40px; /* Khung cố định cho nút */
+  height: 40px;
   position: relative;
   width: 100%;
 }
@@ -206,82 +219,23 @@
   cursor: not-allowed;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 30px;
-}
-
-.pagination button {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.pagination button:disabled {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-
-.pagination button.active {
-  background-color: #e91e63;
-  color: white;
-  border-color: #e91e63;
-}
-
-.pagination button:hover:not(.active):not(:disabled) {
-  background-color: #f5f5f5;
-}
-
 /* Responsive */
 @media (min-width: 1024px) {
   .products {
-    grid-template-columns: repeat(6, minmax(180px, 1fr));
-  }
-}
-
-@media (max-width: 1024px) {
-  .products {
-    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .banner {
-    height: 300px;
-  }
-
-  .banner-content h2 {
-    font-size: 28px;
-  }
-
-  .products {
-    grid-template-columns: repeat(2, minmax(180px, 1fr));
-  }
-
-  .product-list {
-    padding: 20px 10px;
-  }
+  .banner { height: 300px; }
+  .banner-content h2 { font-size: 28px; }
+  .products { grid-template-columns: repeat(2, minmax(180px, 1fr)); }
+  .product-list { padding: 20px 10px; }
 }
 
 @media (max-width: 480px) {
-  .banner {
-    height: 200px;
-  }
-
-  .banner-content h2 {
-    font-size: 20px;
-  }
-
-  .products {
-    grid-template-columns: repeat(1, minmax(180px, 1fr));
-  }
-
-  .product-item {
-    padding: 5px;
-  }
+  .banner { height: 200px; }
+  .banner-content h2 { font-size: 20px; }
+  .products { grid-template-columns: repeat(1, minmax(180px, 1fr)); }
+  .product-item { padding: 5px; }
 }
