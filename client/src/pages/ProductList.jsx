@@ -264,9 +264,6 @@ const ProductList = () => {
                 </div>
               )}
             </div>
-            <div className="filter-group view">
-              <span>||| ||| |||</span>
-            </div>
           </div>
           <div className="products-section">
             <div className="products">
