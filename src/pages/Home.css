@@ -1,0 +1,230 @@
+.home-container {
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+.header {
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f0f0f0;
+  font-size: 12px;
+}
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+.header-buttons button {
+  background: none;
+  border: none;
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+.header-buttons button:hover {
+  color: #ff6f61;
+  text-decoration: underline;
+}
+.header-icons span {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #fff;
+  position: relative;
+  transition: color 0.3s;
+}
+.header-icons span:hover {
+  color: #ff6f61;
+}
+.cart-icon .cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slide.active {
+  opacity: 1;
+}
+.slide-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.slide-content h2 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+.slide-content p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+.view-more {
+  background-color: #ff6f61;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.view-more:hover {
+  transform: scale(1.05);
+}
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+.prev {
+  left: 10px;
+}
+.next {
+  right: 10px;
+}
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+.product-section {
+  padding: 40px 20px;
+  text-align: center;
+}
+.product-section h2 {
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  text-align: center;
+  padding: 10px;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.product-card h3 {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+.product-price {
+  color: #ff6f61;
+  margin-bottom: 10px;
+}
+.product-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.product-actions button {
+  background-color: #ff6f61;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: background-color 0.3s;
+}
+.product-actions button:hover {
+  background-color: #e65b50;
+}
+.detail-btn {
+  background-color: #007bff;
+}
+.detail-btn:hover {
+  background-color: #0056b3;
+}
+.limit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+}
+.close-modal {
+  background-color: #ff6f61;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.close-modal:hover {
+  background-color: #e65b50;
+}

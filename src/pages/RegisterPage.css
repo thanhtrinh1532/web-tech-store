@@ -1,0 +1,118 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #ffffff;
+  position: relative;
+  font-family: Arial, sans-serif;
+}
+.header {
+  width: 100%;
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  font-size: 12px;
+}
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+.header-main nav a {
+  color: #000;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.header-main nav a:hover {
+  text-decoration: underline;
+}
+.header-icons span {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.header-icons span:hover {
+  color: #007bff;
+}
+.register-box {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  width: 350px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+}
+.close-btn:hover {
+  color: #ff0000;
+}
+.register-box h2 {
+  margin-bottom: 20px;
+}
+.register-box input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.register-btn {
+  background-color: #ff6f61;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+.register-btn:hover {
+  background-color: #e65b50;
+}
+.register-box p a {
+  color: #ff6f61;
+  text-decoration: none;
+}
+.register-box p a:hover {
+  text-decoration: underline;
+}
+.pulse {
+  animation: pulse 1s infinite;
+}
+.fade-in {
+  animation: fadeIn 1s;
+}
+.error {
+  color: #ff0000;
+  margin-top: 10px;
+}
+.shake {
+  animation: shake 0.5s;
+}
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
