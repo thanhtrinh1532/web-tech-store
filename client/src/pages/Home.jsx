@@ -11,7 +11,7 @@ const Home = () => {
     { id: 3, name: "Áo croptop nữ", price: 300000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 4, name: "Quần culottes nữ", price: 350000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 5, name: "Đầm dự tiệc", price: 1200000, image: "https://via.placeholder.com/300", category: "nữ" },
-    { id: 6, name: "Áo len nữ", price: 400000, image: "https://via.placeholder.com/300", category: "nữ" },
+    { id: 6, name: "Áo lén nữ", price: 400000, image: "https://via.placeholder.com/300", category: "nữ" },
     // 6 male products
     { id: 7, name: "Áo thun nam", price: 250000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 8, name: "Quần jeans nam", price: 600000, image: "https://via.placeholder.com/300", category: "nam" },
@@ -19,32 +19,27 @@ const Home = () => {
     { id: 10, name: "Áo khoác nam", price: 1000000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 11, name: "Áo sơ mi nam", price: 400000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 12, name: "Quần short nam", price: 300000, image: "https://via.placeholder.com/300", category: "nam" },
-    // 12 products for popular, best-seller, promotion (4 each)
+    // 9 products for popular, bestseller, promotion (3 each)
     { id: 13, name: "Áo thun phổ biến", price: 200000, image: "https://via.placeholder.com/300", type: "popular" },
     { id: 14, name: "Quần jeans phổ biến", price: 550000, image: "https://via.placeholder.com/300", type: "popular" },
     { id: 15, name: "Áo khoác phổ biến", price: 900000, image: "https://via.placeholder.com/300", type: "popular" },
-    { id: 16, name: "Váy phổ biến", price: 700000, image: "https://via.placeholder.com/300", type: "popular" },
-    { id: 17, name: "Váy bán chạy", price: 700000, image: "https://via.placeholder.com/300", type: "bestseller" },
-    { id: 18, name: "Áo croptop bán chạy", price: 280000, image: "https://via.placeholder.com/300", type: "bestseller" },
-    { id: 19, name: "Quần culottes bán chạy", price: 320000, image: "https://via.placeholder.com/300", type: "bestseller" },
-    { id: 20, name: "Áo thun bán chạy", price: 200000, image: "https://via.placeholder.com/300", type: "bestseller" },
-    { id: 21, name: "Áo thun khuyến mãi", price: 150000, image: "https://via.placeholder.com/300", type: "promotion" },
-    { id: 22, name: "Quần short khuyến mãi", price: 200000, image: "https://via.placeholder.com/300", type: "promotion" },
-    { id: 23, name: "Đầm khuyến mãi", price: 600000, image: "https://via.placeholder.com/300", type: "promotion" },
-    { id: 24, name: "Áo khoác khuyến mãi", price: 900000, image: "https://via.placeholder.com/300", type: "promotion" },
-    // 12 newest products
-    { id: 25, name: "Sản phẩm mới 1", price: 300000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 26, name: "Sản phẩm mới 2", price: 310000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 27, name: "Sản phẩm mới 3", price: 320000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 28, name: "Sản phẩm mới 4", price: 330000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 29, name: "Sản phẩm mới 5", price: 340000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 30, name: "Sản phẩm mới 6", price: 350000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 31, name: "Sản phẩm mới 7", price: 360000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 32, name: "Sản phẩm mới 8", price: 370000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 33, name: "Sản phẩm mới 9", price: 380000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 34, name: "Sản phẩm mới 10", price: 390000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 35, name: "Sản phẩm mới 11", price: 400000, image: "https://via.placeholder.com/300", type: "newest" },
-    { id: 36, name: "Sản phẩm mới 12", price: 410000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 16, name: "Váy bán chạy", price: 700000, image: "https://via.placeholder.com/300", type: "bestseller" },
+    { id: 17, name: "Áo croptop bán chạy", price: 280000, image: "https://via.placeholder.com/300", type: "bestseller" },
+    { id: 18, name: "Quần culottes bán chạy", price: 320000, image: "https://via.placeholder.com/300", type: "bestseller" },
+    { id: 19, name: "Áo thun khuyến mãi", price: 150000, image: "https://via.placeholder.com/300", type: "promotion" },
+    { id: 20, name: "Quần short khuyến mãi", price: 200000, image: "https://via.placeholder.com/300", type: "promotion" },
+    { id: 21, name: "Đầm khuyến mãi", price: 600000, image: "https://via.placeholder.com/300", type: "promotion" },
+    // 10 newest products
+    { id: 22, name: "Sản phẩm mới 1", price: 300000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 23, name: "Sản phẩm mới 2", price: 310000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 24, name: "Sản phẩm mới 3", price: 320000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 25, name: "Sản phẩm mới 4", price: 330000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 26, name: "Sản phẩm mới 5", price: 340000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 27, name: "Sản phẩm mới 6", price: 350000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 28, name: "Sản phẩm mới 7", price: 360000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 29, name: "Sản phẩm mới 8", price: 370000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 30, name: "Sản phẩm mới 9", price: 380000, image: "https://via.placeholder.com/300", type: "newest" },
+    { id: 31, name: "Sản phẩm mới 10", price: 390000, image: "https://via.placeholder.com/300", type: "newest" },
   ]);
 
   const [isAdding, setIsAdding] = useState(null);
@@ -52,13 +47,14 @@ const Home = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
-  const femaleProducts = products.filter(p => p.category === "nữ");
-  const maleProducts = products.filter(p => p.category === "nam");
-  const popularProducts = products.filter(p => p.type === "popular");
-  const bestsellerProducts = products.filter(p => p.type === "bestseller");
-  const promotionProducts = products.filter(p => p.type === "promotion");
-  const newestProducts = products.filter(p => p.type === "newest");
+  const femaleProducts = products.filter(p => p.category === "nữ").slice(0, 6);
+  const maleProducts = products.filter(p => p.category === "nam").slice(0, 6);
+  const popularProducts = products.filter(p => p.type === "popular").slice(0, 3);
+  const bestsellerProducts = products.filter(p => p.type === "bestseller").slice(0, 3);
+  const promotionProducts = products.filter(p => p.type === "promotion").slice(0, 3);
+  const newestProducts = products.filter(p => p.type === "newest").slice(0, 10);
 
   const handleAddToCart = (productId) => {
     setIsAdding(productId);
@@ -70,9 +66,13 @@ const Home = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const query = searchQuery.toLowerCase().trim();
+    const query = searchQuery.trim();
     if (query) {
-      const results = products.filter(p => p.name.toLowerCase().includes(query));
+      const normalizedQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const results = products.filter(p => {
+        const normalizedName = p.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        return normalizedName.includes(normalizedQuery);
+      });
       setSearchResults(results.length === 0 ? [{ id: 'not-found', name: 'Không tìm thấy sản phẩm', price: 0, image: '' }] : results);
     } else {
       setSearchResults([]);
@@ -95,8 +95,14 @@ const Home = () => {
     setSearchResults([]);
   };
 
-  const renderProductGrid = (productList, isSmall = false) => (
-    <div className={`products ${isSmall ? 'small' : ''}`}>
+  useEffect(() => {
+    const handleScroll = () => setScrollPosition(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const renderProductGrid = (productList, columns = 1) => (
+    <div className="products" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
       {productList.map(product => (
         <div key={product.id} className="product-item">
           <div className="product-image">
@@ -128,37 +134,41 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Header onSearchClick={() => setIsSearchOpen(true)} />
+      <Header onSearchClick={() => setIsSearchOpen(true)} scrollPosition={scrollPosition} />
       {isSearchOpen && (
         <div className="search-bar-container">
+          <div className="close-search" onClick={handleCloseSearch}>X</div>
           <div className="search-bar">
             <form onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Tìm kiếm sản phẩm..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              {searchQuery && <span className="clear-search" onClick={clearSearch}>X</span>}
+              <div className="search-input-wrapper">
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm sản phẩm..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && <span className="clear-search" onClick={clearSearch}>X</span>}
+              </div>
               <button type="submit">Tìm</button>
             </form>
-            <span className="close-search" onClick={handleCloseSearch}>X</span>
           </div>
           {searchResults.length > 0 && (
-            <div className="search-results">
-              {searchResults.map(result => (
-                result.id === 'not-found' ? (
-                  <p key="not-found" style={{ textAlign: 'center', color: 'red' }}>{result.name}</p>
-                ) : (
-                  <div key={result.id} className="search-result-item" onClick={() => handleSelectProduct(result)}>
-                    <img src={result.image} alt={result.name} />
-                    <div>
-                      <h4>{result.name}</h4>
-                      <p>{result.price.toLocaleString()} VND</p>
+            <div className="search-results-container">
+              <div className="search-results">
+                {searchResults.map(result => (
+                  result.id === 'not-found' ? (
+                    <p key="not-found" style={{ textAlign: 'center', color: 'red' }}>{result.name}</p>
+                  ) : (
+                    <div key={result.id} className="search-result-item" onClick={() => handleSelectProduct(result)}>
+                      <img src={result.image} alt={result.name} />
+                      <div>
+                        <h4>{result.name}</h4>
+                        <p>{result.price.toLocaleString()} VND</p>
+                      </div>
                     </div>
-                  </div>
-                )
-              ))}
+                  )
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -172,7 +182,7 @@ const Home = () => {
       <div className="product-list">
         {/* Female Section */}
         <h3>Thời trang nữ</h3>
-        <div className="gender-section female">
+        <div className="gender-section female" style={{ justifyContent: 'center' }}>
           <div className="gender-image">
             <img src="https://via.placeholder.com/400x600?text=Nữ" alt="Nữ giới" />
           </div>
@@ -189,7 +199,7 @@ const Home = () => {
 
         {/* Male Section */}
         <h3>Thời trang nam</h3>
-        <div className="gender-section male">
+        <div className="gender-section male" style={{ justifyContent: 'center' }}>
           <div className="gender-products">
             {renderProductGrid(maleProducts)}
           </div>
@@ -208,21 +218,21 @@ const Home = () => {
         <div className="category-sections">
           <div className="category-column">
             <h3>Phổ biến</h3>
-            {renderProductGrid(popularProducts, true)}
+            {renderProductGrid(popularProducts, 1)}
           </div>
           <div className="category-column">
             <h3>Bán chạy</h3>
-            {renderProductGrid(bestsellerProducts, true)}
+            {renderProductGrid(bestsellerProducts, 1)}
           </div>
           <div className="category-column">
             <h3>Khuyến mãi</h3>
-            {renderProductGrid(promotionProducts, true)}
+            {renderProductGrid(promotionProducts, 1)}
           </div>
         </div>
 
         {/* Newest Products */}
         <h3>Mới nhất</h3>
-        {renderProductGrid(newestProducts)}
+        {renderProductGrid(newestProducts, 5)}
       </div>
       <Footer />
     </div>

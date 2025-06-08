@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import './Header.css';
 
 const Header = ({ onSearchClick }) => {
-  const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount, setWishlistCount] = useState(0);
   const [isShrunk, setIsShrunk] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0); // Số lượng giỏ hàng
+  const [wishlistCount, setWishlistCount] = useState(0); // Số lượng yêu thích
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,30 +27,28 @@ const Header = ({ onSearchClick }) => {
           <span></span>
           <span></span>
         </div>
-        <div className={`nav ${isMenuOpen ? 'open' : ''}`}>
+        <nav className={`nav ${isMenuOpen ? 'open' : ''}`}>
           <ul>
             <li><Link to="/">Trang chủ</Link></li>
-            <li><Link to="/">Giới Thiệu</Link></li>
+            <li><Link to="/">Giới thiệu</Link></li>
             <li><Link to="/products">Sản phẩm</Link></li>
             <li><Link to="/news">Tin tức</Link></li>
             <li><Link to="/contact">Liên hệ</Link></li>
           </ul>
-        </div>
-        <div className="search-bar">
-          <button className="search-toggle" onClick={onSearchClick}>
-            🔍
-          </button>
-        </div>
+        </nav>
         <div className="user-actions">
-          <Link to="/cart">
-            <span className="icon cart-icon">🛒</span>
+          <Link to="/cart" className="icon-button">
+            <span className="icon">🛒</span>
             <span className="count">{cartCount}</span>
           </Link>
-          <Link to="/wishlist">
-            <span className="icon wishlist-icon">❤️</span>
+          <Link to="/wishlist" className="icon-button">
+            <span className="icon">❤️</span>
             <span className="count">{wishlistCount}</span>
           </Link>
-          <Link to="/login">Tài khoản</Link>
+          <button className="icon-button" onClick={onSearchClick}>
+            <span className="icon">🔍</span>
+          </button>
+          <Link to="/login" className="account-link">Tài khoản</Link>
         </div>
       </div>
     </header>

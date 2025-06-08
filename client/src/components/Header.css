@@ -21,7 +21,7 @@
   padding: 10px 20px;
   max-width: 1200px;
   margin: 0 auto;
-  height: 60px;
+  height: 80px;
 }
 
 .logo {
@@ -44,12 +44,14 @@
 .nav {
   display: flex;
   align-items: center;
+  margin-left: auto;
+  margin-right: 40px;
 }
 
 .nav ul {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 15px;
   margin: 0;
   padding: 0;
 }
@@ -69,26 +71,22 @@
 
 .nav ul li a:hover {
   color: #ff6b6b;
+  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
 }
 
-.search-bar {
-  display: flex;
-  align-items: center;
-  position: relative;
+.nav.open {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 200px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: right;
 }
 
-.search-toggle {
-  padding: 8px;
-  border: none;
-  background-color: #ff6b6b;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.search-toggle:hover {
-  background-color: #e55a5a;
+.nav.open {
+  display: block;
 }
 
 .user-actions {
@@ -97,30 +95,56 @@
   gap: 15px;
 }
 
-.user-actions a {
+.icon-button {
   display: flex;
   align-items: center;
-  text-decoration: none;
+  text-decoration: none; /* Loại bỏ gạch chân */
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  position: relative;
+}
+
+.icon-button:hover {
+  background-color: #ff6b6b;
+  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
+}
+
+.icon-button .icon {
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.icon-button:hover .icon {
+  color: #fff;
+}
+
+.icon-button .count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.account-link {
+  text-decoration: none; /* Loại bỏ gạch chân */
   color: #333;
   font-size: 14px;
   transition: color 0.3s ease;
 }
 
-.user-actions a:hover {
+.account-link:hover {
   color: #ff6b6b;
-}
-
-.icon {
-  font-size: 16px;
-  margin-right: 5px;
-}
-
-.count {
-  background-color: #ff6b6b;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 5px;
-  font-size: 10px;
+  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
 }
 
 .hamburger {
@@ -139,62 +163,87 @@
   transition: all 0.3s ease;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .header-container {
     padding: 10px 15px;
-    height: 50px;
+    height: 70px;
+  }
+  .header.shrunk {
+    height: 35px;
+  }
+  .nav {
+    margin-right: 35px;
   }
   .nav ul {
-    gap: 15px;
+    gap: 12px;
+  }
+  .icon-button {
+    padding: 6px;
+  }
+  .icon-button .count {
+    padding: 1px 5px;
+    font-size: 9px;
   }
 }
 
 @media (max-width: 768px) {
   .header-container {
     padding: 10px;
+    height: 60px;
+  }
+  .header.shrunk {
+    height: 30px;
   }
   .nav {
     display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
   .nav.open {
     display: block;
   }
   .nav ul {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
-    padding: 10px 0;
+    padding: 10px 20px;
   }
   .hamburger {
     display: flex;
   }
-  .user-actions a {
+  .icon-button {
+    padding: 6px;
+    height: 36px;
+  }
+  .account-link {
     font-size: 12px;
+  }
+  .icon-button .count {
+    padding: 1px 4px;
+    font-size: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .header-container {
-    height: 40px;
+    height: 50px;
+  }
+  .header.shrunk {
+    height: 25px;
   }
   .logo a {
     font-size: 18px;
   }
-  .user-actions a {
+  .icon-button {
+    padding: 4px;
+    height: 32px;
+  }
+  .account-link {
     font-size: 10px;
   }
   .icon {
     font-size: 14px;
   }
-  .count {
-    padding: 1px 4px;
-    font-size: 8px;
+  .icon-button .count {
+    padding: 0px 3px;
+    font-size: 7px;
   }
 }
