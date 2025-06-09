@@ -9,7 +9,7 @@
 }
 
 .header.shrunk {
-  padding: 5px 0;
+  padding: 1px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   background-color: rgba(255, 255, 255, 0.95);
 }
@@ -71,7 +71,7 @@
 
 .nav ul li a:hover {
   color: #ff6b6b;
-  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
+  text-decoration: none;
 }
 
 .nav.open {
@@ -98,7 +98,7 @@
 .icon-button {
   display: flex;
   align-items: center;
-  text-decoration: none; /* Loại bỏ gạch chân */
+  text-decoration: none;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -110,12 +110,12 @@
 
 .icon-button:hover {
   background-color: #ff6b6b;
-  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
+  text-decoration: none;
 }
 
 .icon-button .icon {
   font-size: 16px;
-  color: #fff;
+  color: #333;
   transition: color 0.3s ease;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .account-link {
-  text-decoration: none; /* Loại bỏ gạch chân */
+  text-decoration: none;
   color: #333;
   font-size: 14px;
   transition: color 0.3s ease;
@@ -144,7 +144,7 @@
 
 .account-link:hover {
   color: #ff6b6b;
-  text-decoration: none; /* Đảm bảo không gạch chân khi hover */
+  text-decoration: none;
 }
 
 .hamburger {
@@ -161,6 +161,158 @@
   background-color: #333;
   margin: 2px 0;
   transition: all 0.3s ease;
+}
+
+.search-bar-container {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+}
+
+.close-search {
+  display: block;
+  text-align: right;
+  padding: 10px 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.search-bar {
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  max-width: 50vw;
+  margin: 0 auto;
+  animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper input {
+  padding: 10px 30px 10px 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  flex-grow: 1;
+  width: 0;
+  box-sizing: border-box;
+}
+
+.clear-search {
+  position: absolute;
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+}
+
+.clear-search:hover {
+  color: #ff6b6b;
+}
+
+.search-bar form {
+  display: flex;
+  width: 100%;
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background-color: #ff6b6b;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 0 4px 4px 0;
+  transition: background-color 0.3s ease;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.search-icon .icon {
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+  background-color: #e55a5a;
+}
+
+.search-icon:hover .icon {
+  color: #fff;
+}
+
+.search-results-container {
+  max-width: 50vw;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background: white;
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.search-results {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-result-item:hover {
+  background-color: #f9f9f9;
+}
+
+.search-result-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.search-result-item h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.search-result-item p {
+  margin: 0;
+  color: #000000;
 }
 
 @media (max-width: 1024px) {
@@ -220,6 +372,9 @@
     padding: 1px 4px;
     font-size: 8px;
   }
+  .search-bar-container {
+    top: 60px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -239,11 +394,11 @@
   .account-link {
     font-size: 10px;
   }
-  .icon {
-    font-size: 14px;
-  }
   .icon-button .count {
     padding: 0px 3px;
     font-size: 7px;
+  }
+  .search-bar-container {
+    top: 50px;
   }
 }

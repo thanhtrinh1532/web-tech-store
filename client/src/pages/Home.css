@@ -15,7 +15,7 @@
   left: 0;
   width: 100%;
   z-index: 1001;
-  background: white;
+  background: #fff; /* Màu nền giống header */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding-bottom: 20px;
 }
@@ -84,20 +84,32 @@
   width: 100%;
 }
 
-.search-bar button {
-  padding: 10px 15px;
-  background-color: #ff6b6b;
-  color: white;
+.search-icon {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  background-color: transparent;
   border: none;
-  border-radius: 0 4px 4px 0;
   cursor: pointer;
-  margin-left: 0;
-  height: 42px;
+  padding: 10px;
+  border-radius: 4px 4px 4px 4px;
+  transition: background-color 0.3s ease;
+  height: 40px;
   box-sizing: border-box;
 }
 
-.search-bar button:hover {
-  background-color: #e55a5a;
+.search-icon .icon {
+  font-size: 16px;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+  background-color: #ff6b6b; /* Màu hover giống header */
+}
+
+.search-icon:hover .icon {
+  color: #fff; /* Giữ màu trắng khi hover */
 }
 
 .search-results-container {
@@ -216,10 +228,44 @@
 }
 
 .product-list h3 {
-  font-size: 14px; /* Bằng với font-size của header */
-  text-align: center;
-  margin-bottom: 30px;
+  font-size: 14px;
+  margin-bottom: 1px;
   color: #333;
+}
+
+
+.right {
+  text-align: right;
+}
+.left {
+  text-align: left;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #333; /* Màu sắc của gạch ngang */
+  width: 100%; /* Chiều rộng gạch ngang (50% của màn hình) */
+}
+
+.container-row {
+  position: relative; /* Để có thể sử dụng absolute positioning */
+}
+
+.left {
+  float: left;
+  width: 50%; /* Chia đều chiều ngang */
+  padding: 20px; /* Thêm khoảng trắng nếu cần */
+}
+
+.right {
+  float: right;
+  width: 50%; /* Chia đều chiều ngang */
+  padding: 20px; /* Thêm khoảng trắng nếu cần */
+}
+
+.clear {
+  clear: both; /* Đảm bảo không bị lỗi khi sử dụng float */
 }
 
 .gender-section {
@@ -227,15 +273,7 @@
   gap: 20px;
   margin-bottom: 40px;
   width: 100%;
-  justify-content: center;
-}
-
-.gender-section.female {
-  flex-direction: row;
-}
-
-.gender-section.male {
-  flex-direction: row-reverse;
+  /* justify-content: center; */
 }
 
 .gender-image {
@@ -244,9 +282,16 @@
 }
 
 .gender-image img {
-  width: 100%;
-  height: 600px;
+  width: 767px;
+  height: 872px;
   object-fit: cover;
+}
+
+.gender-products-female {
+  margin-left: 360px;
+}
+.gender-products-male {
+  margin-left: 100px;
 }
 
 .gender-products .products {
@@ -257,7 +302,7 @@
 }
 
 .gender-products .products .product-item {
-  height: 300px;
+  height: 268px;
 }
 
 .category-sections {
@@ -265,21 +310,20 @@
   gap: 20px;
   margin-bottom: 40px;
   width: 100%;
+  justify-content: center;
 }
 
 .category-column {
-  flex: 1;
   text-align: left;
 }
 
 .category-column h3 {
   margin-left: 0;
-  font-size: 14px; /* Bằng với font-size của header */
 }
 
 .category-column .products {
   display: grid;
-  grid-template-columns: 1fr; /* Hiển thị hàng dọc */
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
@@ -295,13 +339,13 @@
 
 .sale-banner-middle h2 {
   margin: 0 0 10px 0;
-  font-size: 14px; /* Bằng với font-size của header */
+  font-size: 14px;
   text-transform: uppercase;
 }
 
 .sale-banner-middle p {
   margin: 0;
-  font-size: 14px; /* Bằng với font-size của header */
+  font-size: 14px;
 }
 
 .products {
@@ -327,7 +371,7 @@
 
 .product-image {
   position: relative;
-  padding-top: 100%;
+  padding-top: 190px;
   overflow: hidden;
 }
 

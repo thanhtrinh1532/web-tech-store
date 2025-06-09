@@ -1,0 +1,241 @@
+.contact-container {
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+.header {
+  width: 100%;
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  font-size: 12px;
+}
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+.header-main nav a {
+  color: #000;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.header-main nav a:hover {
+  text-decoration: underline;
+}
+.header-icons span {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.header-icons span:hover {
+  color: #007bff;
+}
+.contact-content {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+}
+.contact-content h2 {
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+.contact-map {
+  margin-bottom: 30px;
+}
+.map-placeholder {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.contact-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+.info-item {
+  flex: 1;
+  margin: 0 10px;
+}
+.info-item h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+.info-item p {
+  margin: 5px 0;
+  color: #666;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.submit-btn {
+  background-color: #ff6f61;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.submit-btn:hover {
+  background-color: #e65b50;
+}
+.response {
+  margin-top: 10px;
+  color: #28a745;
+}.contact-container {
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+.header {
+  width: 100%;
+}
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background: #f8f8f8;
+  font-size: 12px;
+}
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+}
+.header-main nav a {
+  color: #000;
+  text-decoration: none;
+  margin: 0 10px;
+}
+.header-main nav a:hover {
+  text-decoration: underline;
+}
+.header-icons span {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.header-icons span:hover {
+  color: #007bff;
+}
+.contact-content {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+}
+.contact-content h2 {
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+.contact-map {
+  margin-bottom: 30px;
+}
+.map-placeholder {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.contact-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+.info-item {
+  flex: 1;
+  margin: 0 10px;
+}
+.info-item h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+.info-item p {
+  margin: 5px 0;
+  color: #666;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+.contact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.submit-btn {
+  background-color: #ff6f61;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.submit-btn:hover {
+  background-color: #e65b50;
+}
+.response {
+  margin-top: 10px;
+  color: #28a745;
+}
+.header-buttons button {
+  background: none;
+  border: none;
+  color: #000;
+  text-decoration: none;
+  margin: 0 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+.header-buttons button.active {
+  color: #ff6f61;
+  font-weight: bold;
+}
+.header-buttons button:hover {
+  color: #ff6f61;
+  text-decoration: underline;
+}

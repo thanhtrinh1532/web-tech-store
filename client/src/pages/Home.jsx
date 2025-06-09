@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './Home.css';
@@ -10,8 +10,8 @@ const Home = () => {
     { id: 2, name: "Áo sơ mi nữ", price: 450000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 3, name: "Áo croptop nữ", price: 300000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 4, name: "Quần culottes nữ", price: 350000, image: "https://via.placeholder.com/300", category: "nữ" },
-    { id: 5, name: "Đầm dự tiệc", price: 1200000, image: "https://via.placeholder.com/300", category: "nữ" },
-    { id: 6, name: "Áo lén nữ", price: 400000, image: "https://via.placeholder.com/300", category: "nữ" },
+    { id: 5, name: "Áo hoodie nữ", price: 1200000, image: "https://via.placeholder.com/300", category: "nữ" },
+    { id: 6, name: "Áo len nữ", price: 400000, image: "https://via.placeholder.com/300", category: "nữ" },
     // 6 male products
     { id: 7, name: "Áo thun nam", price: 250000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 8, name: "Quần jeans nam", price: 600000, image: "https://via.placeholder.com/300", category: "nam" },
@@ -113,30 +113,47 @@ const Home = () => {
               onLoad={() => setImageLoaded(prev => ({ ...prev, [product.id]: true }))}
               style={{ display: imageLoaded[product.id] ? 'block' : 'none' }}
             />
-          </div>
-          <div className="cart-container">
-            <button
-              className="add-to-cart"
-              onClick={() => !isAdding && handleAddToCart(product.id)}
-              disabled={isAdding === product.id}
-            >
-              {isAdding === product.id ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
-            </button>
+            <span className="heart-icon">❤️</span>
           </div>
           <div className="product-info">
             <h4>{product.name}</h4>
             <p>{product.price.toLocaleString()} VND</p>
           </div>
+          <button
+            className="add-to-cart"
+            onClick={() => !isAdding && handleAddToCart(product.id)}
+            disabled={isAdding === product.id}
+          >
+            {isAdding === product.id ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
+          </button>
         </div>
       ))}
     </div>
   );
 
+  const searchBarRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
+        handleCloseSearch();
+      }
+    };
+
+    if (isSearchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSearchOpen]);
+
   return (
     <div className="home">
       <Header onSearchClick={() => setIsSearchOpen(true)} scrollPosition={scrollPosition} />
       {isSearchOpen && (
-        <div className="search-bar-container">
+        <div className="search-bar-container" ref={searchBarRef}>
           <div className="close-search" onClick={handleCloseSearch}>X</div>
           <div className="search-bar">
             <form onSubmit={handleSearch}>
@@ -149,7 +166,9 @@ const Home = () => {
                 />
                 {searchQuery && <span className="clear-search" onClick={clearSearch}>X</span>}
               </div>
-              <button type="submit">Tìm</button>
+              <button type="submit" className="search-icon">
+                <span className="icon">🔍</span>
+              </button>
             </form>
           </div>
           {searchResults.length > 0 && (
@@ -181,13 +200,14 @@ const Home = () => {
       </div>
       <div className="product-list">
         {/* Female Section */}
-        <h3>Thời trang nữ</h3>
-        <div className="gender-section female" style={{ justifyContent: 'center' }}>
+        <div className="gender-section">
           <div className="gender-image">
-            <img src="https://via.placeholder.com/400x600?text=Nữ" alt="Nữ giới" />
+            <img src="https://coutura.monamedia.net/wp-content/uploads/2017/01/fashion-1-women.jpg" alt="Nữ giới" />
           </div>
-          <div className="gender-products">
-            {renderProductGrid(femaleProducts)}
+          <div className="gender-products-female">
+            <h3 className="left">Thời trang nữ</h3>
+            <hr />
+            {renderProductGrid(femaleProducts.slice(0, 6), 3)}
           </div>
         </div>
 
@@ -198,13 +218,14 @@ const Home = () => {
         </div>
 
         {/* Male Section */}
-        <h3>Thời trang nam</h3>
-        <div className="gender-section male" style={{ justifyContent: 'center' }}>
-          <div className="gender-products">
-            {renderProductGrid(maleProducts)}
+        <div className="gender-section">
+          <div className="gender-products-male">
+            <h3 className="right">Thời trang nam</h3>
+            <hr />
+            {renderProductGrid(maleProducts, 3)}
           </div>
           <div className="gender-image">
-            <img src="https://via.placeholder.com/400x600?text=Nam" alt="Nam giới" />
+            <img src="https://coutura.monamedia.net/wp-content/uploads/2017/01/fashion-1-men.jpg" alt="Nam giới" />
           </div>
         </div>
 
