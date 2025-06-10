@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPage.css';
+import { getPOST } from '../../services/api';
 
 const AdminPage = () => {
   const [products, setProducts] = useState([]);
@@ -15,12 +16,20 @@ const AdminPage = () => {
 
   const handleAddProduct = async () => {
     if (role !== 'admin') return;
-    const response = await fetch('/api/admin/products', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newProduct),
-    });
-    if (response.ok) {
+    // const response = await fetch('/api/admin/products', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json', },
+    //   body: JSON.stringify(newProduct),
+    // });
+    // if (response.ok) {
+    //   const addedProduct = await response.json();
+    //   setProducts([...products, addedProduct]);
+    //   setNewProduct({ name: '', price: '' });
+    // }
+    const response = await getPOST('/api/admin/products', newProduct)
+    console.log({ response })
+
+    if (response) {
       const addedProduct = await response.json();
       setProducts([...products, addedProduct]);
       setNewProduct({ name: '', price: '' });

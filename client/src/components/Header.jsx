@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 
-const Header = ({ onSearchClick, products = [] }) => {
+const Header = () => {
   const [isShrunk, setIsShrunk] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
@@ -10,12 +10,11 @@ const Header = ({ onSearchClick, products = [] }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const searchBarRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsShrunk(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsShrunk(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -32,38 +31,66 @@ const Header = ({ onSearchClick, products = [] }) => {
     if (isSearchOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isSearchOpen]);
 
-  const handleSearch = (e) => {
+  const handleSearch = useCallback(async (e) => {
     e.preventDefault();
     const query = searchQuery.trim();
-    if (query) {
-      const normalizedQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const results = products.filter(p => {
-        const normalizedName = p.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-        return normalizedName.includes(normalizedQuery);
-      });
-      setSearchResults(results.length === 0 ? [{ id: 'not-found', name: 'Không tìm thấy sản phẩm', price: 0, image: '' }] : results);
-    } else {
+    if (!query) return;
+
+    setIsLoading(true);
+    try {
+      const response = await fetch(`http://localhost/api/products.php?query=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      setSearchResults(data.error ? [{ id: 'error', name: 'Lỗi kết nối cơ sở dữ liệu', price: 0, image: '' }]
+        : data.length === 0 ? [{ id: 'not-found', name: 'Không tìm thấy sản phẩm', price: 0, image: '' }] : data);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([{ id: 'error', name: 'Lỗi khi tìm kiếm, vui lòng thử lại', price: 0, image: '' }]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchQuery]);
+
+  const handleSelectProduct = useCallback((product) => {
+    if (product.id !== 'not-found' && product.id !== 'error') {
+      alert(`Chọn sản phẩm: ${product.name}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
       setSearchResults([]);
     }
-  };
+  }, []);
 
-  const handleSelectProduct = (product) => {
-    alert(`Chọn sản phẩm: ${product.name}`);
-    setIsSearchOpen(false);
+  const clearSearch = useCallback(() => {
     setSearchQuery('');
     setSearchResults([]);
-  };
+  }, []);
 
-  const clearSearch = () => {
-    setSearchQuery('');
-    setSearchResults([]);
-  };
+  const renderedResults = useMemo(() => (
+    isLoading ? (
+      <p style={{ textAlign: 'center', color: '#333' }}>Đang tìm kiếm...</p>
+    ) : searchResults.length > 0 && (
+      <div className="search-results">
+        {searchResults.map(result => (
+          <div
+            key={result.id}
+            className={`search-result-item ${result.id === 'not-found' || result.id === 'error' ? 'error' : ''}`}
+            onClick={() => handleSelectProduct(result)}
+          >
+            {result.id !== 'not-found' && result.id !== 'error' && (
+              <img src={result.image} alt={result.name} />
+            )}
+            <div>
+              <h4>{result.name}</h4>
+              {result.price > 0 && <p>{result.price.toLocaleString()} VND</p>}
+              {result.category && <p style={{ color: '#666', fontSize: '14px' }}>Danh mục: {result.category}</p>}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  ), [isLoading, searchResults, handleSelectProduct]);
 
   return (
     <header className={`header ${isShrunk ? 'shrunk' : ''}`}>
@@ -72,9 +99,7 @@ const Header = ({ onSearchClick, products = [] }) => {
           <Link to="/">HUNIVA Fashion</Link>
         </div>
         <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </div>
         <nav className={`nav ${isMenuOpen ? 'open' : ''}`}>
           <ul>
@@ -112,36 +137,17 @@ const Header = ({ onSearchClick, products = [] }) => {
               <div className="search-input-wrapper">
                 <input
                   type="text"
-                  placeholder="Tìm kiếm sản phẩm..."
+                  placeholder="Tìm kiếm sản phẩm hoặc danh mục..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {searchQuery && <span className="clear-search" onClick={clearSearch}>X</span>}
               </div>
-              <button type="submit" className="search-icon">
+              <button type="submit" className="search-icon" disabled={isLoading}>
                 <span className="icon">🔍</span>
               </button>
             </form>
           </div>
-          {searchResults.length > 0 && (
-            <div className="search-results-container">
-              <div className="search-results">
-                {searchResults.map(result => (
-                  result.id === 'not-found' ? (
-                    <p key="not-found" style={{ textAlign: 'center', color: 'red' }}>{result.name}</p>
-                  ) : (
-                    <div key={result.id} className="search-result-item" onClick={() => handleSelectProduct(result)}>
-                      <img src={result.image} alt={result.name} />
-                      <div>
-                        <h4>{result.name}</h4>
-                        <p>{result.price.toLocaleString()} VND</p>
-                      </div>
-                    </div>
-                  )
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       )}
     </header>

@@ -1,25 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ProductCard from '../components/ProductCard';
 import './Home.css';
 
+/**
+ * Home component displays the main page with product sections (female, male, popular, etc.).
+ * Includes search functionality and product grid rendering using ProductCard.
+ */
 const Home = () => {
   const [products] = useState([
-    // 6 female products
+    // Female products
     { id: 1, name: "Váy maxi nữ", price: 800000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 2, name: "Áo sơ mi nữ", price: 450000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 3, name: "Áo croptop nữ", price: 300000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 4, name: "Quần culottes nữ", price: 350000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 5, name: "Áo hoodie nữ", price: 1200000, image: "https://via.placeholder.com/300", category: "nữ" },
     { id: 6, name: "Áo len nữ", price: 400000, image: "https://via.placeholder.com/300", category: "nữ" },
-    // 6 male products
+    // Male products
     { id: 7, name: "Áo thun nam", price: 250000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 8, name: "Quần jeans nam", price: 600000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 9, name: "Áo hoodie nam", price: 350000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 10, name: "Áo khoác nam", price: 1000000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 11, name: "Áo sơ mi nam", price: 400000, image: "https://via.placeholder.com/300", category: "nam" },
     { id: 12, name: "Quần short nam", price: 300000, image: "https://via.placeholder.com/300", category: "nam" },
-    // 9 products for popular, bestseller, promotion (3 each)
+    // Popular, bestseller, promotion
     { id: 13, name: "Áo thun phổ biến", price: 200000, image: "https://via.placeholder.com/300", type: "popular" },
     { id: 14, name: "Quần jeans phổ biến", price: 550000, image: "https://via.placeholder.com/300", type: "popular" },
     { id: 15, name: "Áo khoác phổ biến", price: 900000, image: "https://via.placeholder.com/300", type: "popular" },
@@ -29,7 +34,7 @@ const Home = () => {
     { id: 19, name: "Áo thun khuyến mãi", price: 150000, image: "https://via.placeholder.com/300", type: "promotion" },
     { id: 20, name: "Quần short khuyến mãi", price: 200000, image: "https://via.placeholder.com/300", type: "promotion" },
     { id: 21, name: "Đầm khuyến mãi", price: 600000, image: "https://via.placeholder.com/300", type: "promotion" },
-    // 10 newest products
+    // Newest products
     { id: 22, name: "Sản phẩm mới 1", price: 300000, image: "https://via.placeholder.com/300", type: "newest" },
     { id: 23, name: "Sản phẩm mới 2", price: 310000, image: "https://via.placeholder.com/300", type: "newest" },
     { id: 24, name: "Sản phẩm mới 3", price: 320000, image: "https://via.placeholder.com/300", type: "newest" },
@@ -48,106 +53,96 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const searchBarRef = useRef(null);
 
-  const femaleProducts = products.filter(p => p.category === "nữ").slice(0, 6);
-  const maleProducts = products.filter(p => p.category === "nam").slice(0, 6);
-  const popularProducts = products.filter(p => p.type === "popular").slice(0, 3);
-  const bestsellerProducts = products.filter(p => p.type === "bestseller").slice(0, 3);
-  const promotionProducts = products.filter(p => p.type === "promotion").slice(0, 3);
-  const newestProducts = products.filter(p => p.type === "newest").slice(0, 10);
+  // Memoized product filters
+  const femaleProducts = useMemo(() => products.filter(p => p.category === "nữ").slice(0, 6), [products]);
+  const maleProducts = useMemo(() => products.filter(p => p.category === "nam").slice(0, 6), [products]);
+  const popularProducts = useMemo(() => products.filter(p => p.type === "popular").slice(0, 3), [products]);
+  const bestsellerProducts = useMemo(() => products.filter(p => p.type === "bestseller").slice(0, 3), [products]);
+  const promotionProducts = useMemo(() => products.filter(p => p.type === "promotion").slice(0, 3), [products]);
+  const newestProducts = useMemo(() => products.filter(p => p.type === "newest").slice(0, 10), [products]);
 
-  const handleAddToCart = (productId) => {
+  // Handle add to cart
+  const handleAddToCart = useCallback((productId) => {
     setIsAdding(productId);
     setTimeout(() => {
       setIsAdding(null);
       alert(`Đã thêm sản phẩm ${productId} vào giỏ hàng thành công!`);
     }, 1000);
-  };
+  }, []);
 
-  const handleSearch = (e) => {
+  // Handle search
+  const handleSearch = useCallback((e) => {
     e.preventDefault();
     const query = searchQuery.trim();
-    if (query) {
-      const normalizedQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const results = products.filter(p => {
-        const normalizedName = p.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-        return normalizedName.includes(normalizedQuery);
-      });
-      setSearchResults(results.length === 0 ? [{ id: 'not-found', name: 'Không tìm thấy sản phẩm', price: 0, image: '' }] : results);
-    } else {
+    if (!query) {
       setSearchResults([]);
+      return;
     }
-  };
+    const normalizedQuery = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const results = products.filter(p =>
+      p.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes(normalizedQuery)
+    );
+    setSearchResults(results.length === 0 ? [{ id: 'not-found', name: 'Không tìm thấy sản phẩm', price: 0, image: '' }] : results);
+  }, [searchQuery, products]);
 
-  const handleCloseSearch = () => {
+  // Close search bar
+  const handleCloseSearch = useCallback(() => {
     setIsSearchOpen(false);
     setSearchQuery('');
     setSearchResults([]);
-  };
+  }, []);
 
-  const handleSelectProduct = (product) => {
-    alert(`Chọn sản phẩm: ${product.name}`);
-    handleCloseSearch();
-  };
+  // Handle product selection from search
+  const handleSelectProduct = useCallback((product) => {
+    if (product.id !== 'not-found') {
+      alert(`Chọn sản phẩm: ${product.name}`);
+      handleCloseSearch();
+    }
+  }, [handleCloseSearch]);
 
-  const clearSearch = () => {
+  // Clear search input
+  const clearSearch = useCallback(() => {
     setSearchQuery('');
     setSearchResults([]);
-  };
+  }, []);
 
+  // Handle scroll for header
   useEffect(() => {
     const handleScroll = () => setScrollPosition(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const renderProductGrid = (productList, columns = 1) => (
-    <div className="products" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-      {productList.map(product => (
-        <div key={product.id} className="product-item">
-          <div className="product-image">
-            {!imageLoaded[product.id] && <div className="spinner"></div>}
-            <img
-              src={product.image}
-              alt={product.name}
-              onLoad={() => setImageLoaded(prev => ({ ...prev, [product.id]: true }))}
-              style={{ display: imageLoaded[product.id] ? 'block' : 'none' }}
-            />
-            <span className="heart-icon">❤️</span>
-          </div>
-          <div className="product-info">
-            <h4>{product.name}</h4>
-            <p>{product.price.toLocaleString()} VND</p>
-          </div>
-          <button
-            className="add-to-cart"
-            onClick={() => !isAdding && handleAddToCart(product.id)}
-            disabled={isAdding === product.id}
-          >
-            {isAdding === product.id ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
-          </button>
-        </div>
-      ))}
-    </div>
-  );
-
-  const searchBarRef = useRef(null);
-
+  // Handle click outside search bar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
         handleCloseSearch();
       }
     };
-
     if (isSearchOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSearchOpen, handleCloseSearch]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isSearchOpen]);
+  // Render product grid
+  const renderProductGrid = useCallback((productList, columns = 1) => (
+    <div className="products" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
+      {productList.map(product => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          isAdding={isAdding}
+          handleAddToCart={handleAddToCart}
+          imageLoaded={imageLoaded}
+          setImageLoaded={setImageLoaded}
+        />
+      ))}
+    </div>
+  ), [isAdding, handleAddToCart, imageLoaded, setImageLoaded]);
 
   return (
     <div className="home">
@@ -207,16 +202,14 @@ const Home = () => {
           <div className="gender-products-female">
             <h3 className="left">Thời trang nữ</h3>
             <hr />
-            {renderProductGrid(femaleProducts.slice(0, 6), 3)}
+            {renderProductGrid(femaleProducts, 3)}
           </div>
         </div>
-
         {/* 50% Discount Banner */}
         <div className="sale-banner-middle">
           <h2>GIẢM GIÁ 50% CHO TẤT CẢ SẢN PHẨM!</h2>
           <p>Nhanh tay đặt hàng ngay hôm nay!</p>
         </div>
-
         {/* Male Section */}
         <div className="gender-section">
           <div className="gender-products-male">
@@ -228,13 +221,11 @@ const Home = () => {
             <img src="https://coutura.monamedia.net/wp-content/uploads/2017/01/fashion-1-men.jpg" alt="Nam giới" />
           </div>
         </div>
-
         {/* 20% Discount Banner */}
         <div className="sale-banner-middle">
           <h2>GIẢM GIÁ 20% CHO TÀI KHOẢN MỚI</h2>
           <p>Đăng ký ngay hôm nay để nhận ưu đãi đặc biệt!</p>
         </div>
-
         {/* Popular, Bestseller, Promotion Sections */}
         <div className="category-sections">
           <div className="category-column">
@@ -250,7 +241,6 @@ const Home = () => {
             {renderProductGrid(promotionProducts, 1)}
           </div>
         </div>
-
         {/* Newest Products */}
         <h3>Mới nhất</h3>
         {renderProductGrid(newestProducts, 5)}

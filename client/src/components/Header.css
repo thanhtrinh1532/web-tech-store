@@ -24,11 +24,6 @@
   height: 80px;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-}
-
 .logo a {
   font-size: 24px;
   font-weight: bold;
@@ -56,11 +51,6 @@
   padding: 0;
 }
 
-.nav ul li {
-  display: flex;
-  align-items: center;
-}
-
 .nav ul li a {
   text-decoration: none;
   color: #333;
@@ -71,7 +61,6 @@
 
 .nav ul li a:hover {
   color: #ff6b6b;
-  text-decoration: none;
 }
 
 .nav.open {
@@ -110,7 +99,6 @@
 
 .icon-button:hover {
   background-color: #ff6b6b;
-  text-decoration: none;
 }
 
 .icon-button .icon {
@@ -144,7 +132,6 @@
 
 .account-link:hover {
   color: #ff6b6b;
-  text-decoration: none;
 }
 
 .hamburger {
@@ -175,31 +162,25 @@
 }
 
 .close-search {
-  display: block;
   text-align: right;
   padding: 10px 20px;
   font-size: 20px;
   cursor: pointer;
+  color: #333;
 }
 
 .search-bar {
   padding: 10px 20px;
   display: flex;
   align-items: center;
-  max-width: 50vw;
+  max-width: 800px;
   margin: 0 auto;
   animation: slideDown 0.5s ease-out;
 }
 
 @keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .search-input-wrapper {
@@ -210,18 +191,24 @@
 }
 
 .search-input-wrapper input {
-  padding: 10px 30px 10px 10px;
+  padding: 12px 40px 12px 12px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 4px 0 0 4px;
   flex-grow: 1;
-  width: 0;
+  width: 100%;
   box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.search-input-wrapper input:focus {
+  border-color: #ff6b6b;
+  outline: none;
 }
 
 .clear-search {
   position: absolute;
-  right: 35px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
@@ -241,42 +228,46 @@
 .search-icon {
   display: flex;
   align-items: center;
-  text-decoration: none;
   background-color: #ff6b6b;
   border: none;
   cursor: pointer;
-  padding: 10px;
+  padding: 12px;
   border-radius: 0 4px 4px 0;
   transition: background-color 0.3s ease;
-  height: 40px;
+  height: 44px;
   box-sizing: border-box;
 }
 
 .search-icon .icon {
-  font-size: 16px;
+  font-size: 18px;
   color: #fff;
-  transition: color 0.3s ease;
 }
 
 .search-icon:hover {
   background-color: #e55a5a;
 }
 
-.search-icon:hover .icon {
-  color: #fff;
+.search-icon:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .search-results-container {
-  max-width: 50vw;
+  max-width: 800px;
   margin: 0 auto;
   padding: 10px 20px;
   background: white;
   max-height: 50vh;
   overflow-y: auto;
   margin-top: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.una);
 }
 
 .search-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
   animation: fadeIn 0.3s ease-in;
 }
 
@@ -287,32 +278,53 @@
 
 .search-result-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ddd;
+  border: 1px solid #eee;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+  text-align: center;
 }
 
 .search-result-item:hover {
-  background-color: #f9f9f9;
+  background-color: #f5f5f5;
+}
+
+.search-result-item.error {
+  cursor: default;
+  grid-column: 1 / -1;
+  color: #ff6b6b;
+  border: none;
 }
 
 .search-result-item img {
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  max-width: 150px;
+  height: 150px;
   object-fit: cover;
-  margin-right: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
 }
 
 .search-result-item h4 {
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
+  color: #333;
 }
 
 .search-result-item p {
-  margin: 0;
-  color: #000000;
+  margin: 5px 0 0;
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.search-result-item p.category {
+  color: #666;
+  font-size: 12px;
+  font-weight: normal;
 }
 
 @media (max-width: 1024px) {
@@ -375,6 +387,15 @@
   .search-bar-container {
     top: 60px;
   }
+  .search-bar {
+    max-width: 90%;
+  }
+  .search-results-container {
+    max-width: 90%;
+  }
+  .search-results {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
@@ -400,5 +421,8 @@
   }
   .search-bar-container {
     top: 50px;
+  }
+  .search-results {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 }
