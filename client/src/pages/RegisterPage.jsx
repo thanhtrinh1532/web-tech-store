@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import './RegisterPage.css';
 import { useNavigate } from 'react-router-dom';
@@ -158,8 +159,22 @@ const RegisterPage = () => {
           </div>
         </div>
       </footer>
+=======
+import React from 'react';
+import './RegisterPage.css'; // Tạo file CSS nếu cần
+
+const RegisterPage = () => {
+  return (
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p>This is the admin page.</p>
+>>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default RegisterPage;
+=======
+export default RegisterPage; // Export mặc định
+>>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
@@ -99,8 +100,22 @@ const ProductDetail = () => {
         </div>
       </div>
       <Footer />
+=======
+import React from 'react';
+import './ProductDetail.css'; // Tạo file CSS nếu cần
+
+const ProductDetail = () => {
+  return (
+    <div>
+      <h1>ProductDetail</h1>
+      <p>Chi tiết sản phẩm</p>
+>>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9
     </div>
   );
 };
 
+<<<<<<< HEAD
 export default ProductDetail;
+=======
+export default ProductDetail; // Export mặc định
+>>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9

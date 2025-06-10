@@ -245,8 +245,8 @@ const Home = () => {
         <h3>Mới nhất</h3>
         {renderProductGrid(newestProducts, 5)}
       </div>
-      <Footer />
-    </div>
+    <Footer />
+  </div>
   );
 };
 

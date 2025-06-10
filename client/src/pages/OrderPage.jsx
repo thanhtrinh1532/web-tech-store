@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useLocation, Link } from "react-router-dom"
 import { useState, useEffect } from "react"
 import ProgressSteps from "../components/ProgressSteps"
@@ -302,3 +303,18 @@ const OrderPage = () => {
 }
 
 export default OrderPage
+=======
+import React from 'react';
+import './OrderPage.css'; // Tạo file CSS nếu cần
+
+const OrderPage = () => {
+  return (
+    <div>
+      <h1>GIỎ HÀNG ORDER</h1>
+      <p>This is the admin page.</p>
+    </div>
+  );
+};
+
+export default OrderPage; // Export mặc định
+>>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9
