@@ -1,28 +1,63 @@
 const express = require('express');
-   const cors = require('cors');
-   const dotenv = require('dotenv');
-   dotenv.config();
+const dotenv = require('dotenv');
+const { sequelize } = require('./config/db');
+const cors = require('cors');
 
-   const productRoutes = require('./routes/productRoutes');
-   const userRoutes = require('./routes/userRoutes');
-   const orderRoutes = require('./routes/orderRoutes');
-   const cartRoutes = require('./routes/cartRoutes');
-   const contactRoutes = require('./routes/contactRoutes');
-   const adminRoutes = require('./routes/adminRoutes');
-   const aiRoutes = require('./routes/aiRoutes');
+// Load environment variables
+dotenv.config();
 
-   const app = express();
+// Initialize Express app
+const app = express();
 
-   app.use(cors());
-   app.use(express.json());
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-   app.use('/api/products', productRoutes);
-   app.use('/api/users', userRoutes);
-   app.use('/api/orders', orderRoutes);
-   app.use('/api/cart', cartRoutes);
-   app.use('/api/contacts', contactRoutes);
-   app.use('/api/admin', adminRoutes);
-   app.use('/api/ai', aiRoutes);
+// Routes
+const productRoutes = require('./routes/productRoutes');
+const userRoutes = require('./routes/userRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const contactRoutes = require('./routes/contactRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const aiRoutes = require('./routes/aiRoutes');
 
-   const PORT = process.env.PORT || 5000;
-   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Route middleware
+app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/contacts', contactRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/ai', aiRoutes);
+app.get('/test', (req, res) => res.json({ message: 'Test route working' }));
+// Basic route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the Tech Store API' });
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!', details: err.message });
+});
+
+const initApp = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    const { Contact } = require('./models/Contact');
+    await Contact.sync({ alter: true });
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running at: http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.error('Unable to connect to the database or sync models:', error);
+  }
+};
+
+
+
+initApp();

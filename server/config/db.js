@@ -1,6 +1,6 @@
-const mysql = require('mysql2');
-   const dotenv = require('dotenv');
-   dotenv.config();
+require('dotenv').config();
+
+const { Sequelize } = require('sequelize');
 
    const db = mysql.createConnection({
      host: process.env.DB_HOST,
@@ -14,7 +14,7 @@ const mysql = require('mysql2');
        console.error('Database connection failed:', err);
        return;
      }
-     console.log('Kết nối csdl thành công');
+     console.log('Connected to MySQL database');
    });
 
-   module.exports = db;
+module.exports = { sequelize };
