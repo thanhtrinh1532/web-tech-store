@@ -16,21 +16,15 @@ import './App.css';
 
 function App() {
   return (
-    <CartProvider> {/* Bao bọc toàn bộ ứng dụng bằng CartProvider */}
+    <CartProvider>
       <Router>
         <div className="app">
-          <header>
-            <nav>
-              <Link to="/">Home</Link> | <Link to="/products">Products</Link> | <Link to="/cart">Cart</Link> | 
-              <Link to="/checkout">Checkout</Link> | <Link to="/login">Login</Link> | <Link to="/register">Register</Link> | 
-              <Link to="/contact">Contact</Link> | <Link to="/orders">Orders</Link> | <Link to="/admin">Admin</Link>
-            </nav>
-          </header>
+          {/* Header và Navigation có thể được đặt ở đây nếu muốn hiển thị trên mọi trang */}
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<ProductList />} />
-              <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/product/:productId" element={<ProductDetail />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/login" element={<LoginPage />} />

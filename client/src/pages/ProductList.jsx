@@ -1,3 +1,4 @@
+// src/pages/ProductList.jsx
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -13,21 +14,32 @@ import './ProductList.css';
  */
 const useProductFilter = (initialProducts) => {
   const [filters, setFilters] = useState({
-    categories: [],
+    mainCategory: null, // 'nam', 'nữ'
+    subCategories: [], // e.g., 'áo sơ mi', 'váy'
     minPrice: 0,
     maxPrice: 2000000,
     statuses: [],
     sortBy: '',
-    activeFilters: [],
   });
 
   const filteredProducts = useMemo(() => {
     return initialProducts
       .filter(product => {
-        const categoryMatch = filters.categories.length === 0 || filters.categories.includes(product.category);
+        // Lọc theo danh mục chính
+        const mainCategoryMatch = !filters.mainCategory || product.gender === filters.mainCategory;
+
+        // Lọc theo danh mục con (subCategory)
+        const subCategoryMatch = filters.subCategories.length === 0 || filters.subCategories.includes(product.subCategory);
+
         const priceMatch = product.price >= filters.minPrice && product.price <= filters.maxPrice;
-        const statusMatch = filters.statuses.length === 0 || filters.statuses.includes(product.status);
-        return categoryMatch && priceMatch && statusMatch;
+
+        // Lọc theo trạng thái
+        let statusMatch = true;
+        if (filters.statuses.length > 0) {
+          statusMatch = filters.statuses.includes(product.status);
+        }
+
+        return mainCategoryMatch && subCategoryMatch && priceMatch && statusMatch;
       })
       .sort((a, b) => {
         switch (filters.sortBy) {
@@ -39,312 +51,310 @@ const useProductFilter = (initialProducts) => {
       });
   }, [initialProducts, filters]);
 
-  const handleCategoryChange = useCallback((e) => {
-    const { value, checked } = e.target;
-    setFilters(prev => {
-      const updatedCategories = checked
-        ? [...prev.categories, value]
-        : prev.categories.filter(cat => cat !== value);
-      const activeFilters = updatedCategories.length > 0
-        ? [...new Set([...prev.activeFilters, `Danh mục: ${updatedCategories.join(', ')}`])]
-        : prev.activeFilters.filter(f => !f.startsWith('Danh mục:'));
-      return { ...prev, categories: updatedCategories, activeFilters };
+  const handleMainCategoryChange = useCallback((category) => {
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      mainCategory: prevFilters.mainCategory === category ? null : category, // Toggle main category
+      subCategories: [], // Reset subcategories when main category changes
+    }));
+  }, []);
+
+  const handleSubCategoryChange = useCallback((subCategory) => {
+    setFilters(prevFilters => {
+      const newSubCategories = prevFilters.subCategories.includes(subCategory)
+        ? prevFilters.subCategories.filter(c => c !== subCategory)
+        : [...prevFilters.subCategories, subCategory];
+      return { ...prevFilters, subCategories: newSubCategories };
     });
   }, []);
 
-  const handleStatusChange = useCallback((e) => {
-    const { value, checked } = e.target;
-    setFilters(prev => {
-      const updatedStatuses = checked
-        ? [...prev.statuses, value]
-        : prev.statuses.filter(stat => stat !== value);
-      const activeFilters = updatedStatuses.length > 0
-        ? [...new Set([...prev.activeFilters, `Tình trạng: ${updatedStatuses.join(', ')}`])]
-        : prev.activeFilters.filter(f => !f.startsWith('Tình trạng:'));
-      return { ...prev, statuses: updatedStatuses, activeFilters };
+  const handlePriceChange = useCallback((value) => {
+    setFilters(prevFilters => ({ ...prevFilters, minPrice: value[0], maxPrice: value[1] }));
+  }, []);
+
+  const handleStatusChange = useCallback((status) => {
+    setFilters(prevFilters => {
+      const newStatuses = prevFilters.statuses.includes(status)
+        ? prevFilters.statuses.filter(s => s !== status)
+        : [...prevFilters.statuses, status];
+      return { ...prevFilters, statuses: newStatuses };
     });
   }, []);
 
   const handleSortChange = useCallback((e) => {
-    const value = e.target.value;
-    setFilters(prev => {
-      const activeFilters = value
-        ? [...new Set([...prev.activeFilters, `Sắp xếp: ${value === 'default' ? 'Mặc định' : value === 'newest' ? 'Mới nhất' : value === 'priceAsc' ? 'Giá: Tăng dần' : 'Giá: Giảm dần'}`])]
-        : prev.activeFilters.filter(f => !f.startsWith('Sắp xếp:'));
-      return { ...prev, sortBy: value, activeFilters };
-    });
+    setFilters(prevFilters => ({ ...prevFilters, sortBy: e.target.value }));
   }, []);
 
-  const handlePriceRangeChange = useCallback((value) => {
-    const [min, max] = value;
-    setFilters(prev => {
-      const activeFilters = min !== 0 || max !== 2000000
-        ? [...new Set([...prev.activeFilters, `Giá: ${min.toLocaleString()}đ - ${max.toLocaleString()}đ`])]
-        : prev.activeFilters.filter(f => !f.startsWith('Giá:'));
-      return { ...prev, minPrice: min, maxPrice: max, activeFilters };
-    });
-  }, []);
-
-  const resetPriceRange = useCallback(() => {
-    setFilters(prev => ({
-      ...prev,
+  const resetFilters = useCallback(() => {
+    setFilters({
+      mainCategory: null,
+      subCategories: [],
       minPrice: 0,
       maxPrice: 2000000,
-      activeFilters: prev.activeFilters.filter(f => !f.startsWith('Giá:')),
-    }));
-  }, []);
-
-  const removeFilter = useCallback((filter) => {
-    setFilters(prev => {
-      const newFilters = { ...prev };
-      if (filter.startsWith('Danh mục:')) newFilters.categories = [];
-      if (filter.startsWith('Tình trạng:')) newFilters.statuses = [];
-      if (filter.startsWith('Sắp xếp:')) newFilters.sortBy = '';
-      if (filter.startsWith('Giá:')) {
-        newFilters.minPrice = 0;
-        newFilters.maxPrice = 2000000;
-      }
-      newFilters.activeFilters = prev.activeFilters.filter(f => f !== filter);
-      return newFilters;
+      statuses: [],
+      sortBy: '',
     });
   }, []);
 
   return {
     filteredProducts,
     filters,
-    handleCategoryChange,
+    handleMainCategoryChange,
+    handleSubCategoryChange,
+    handlePriceChange,
     handleStatusChange,
     handleSortChange,
-    handlePriceRangeChange,
-    resetPriceRange,
-    removeFilter,
+    resetFilters,
   };
 };
 
-/**
- * ProductList component displays a paginated list of products with filters
- */
 const ProductList = () => {
-  const [products] = useState([
-    { id: 1, name: "Áo thun nam đen", price: 250000, image: "https://via.placeholder.com/300", category: "nam", status: "có sẵn" },
-    { id: 2, name: "Áo sơ mi nữ trắng", price: 450000, image: "https://via.placeholder.com/300", category: "nữ", status: "sale" },
-    { id: 3, name: "Quần jeans nam", price: 600000, image: "https://via.placeholder.com/300", category: "nam", status: "đặt trước" },
-    { id: 4, name: "Váy maxi nữ", price: 800000, image: "https://via.placeholder.com/300", category: "nữ", status: "có sẵn" },
-    { id: 5, name: "Áo khoác nam", price: 1000000, image: "https://via.placeholder.com/300", category: "nam", status: "sale" },
-    { id: 6, name: "Đầm dự tiệc nữ", price: 1200000, image: "https://via.placeholder.com/300", category: "nữ", status: "đặt trước" },
-    { id: 7, name: "Áo hoodie nam", price: 350000, image: "https://via.placeholder.com/300", category: "nam", status: "có sẵn" },
-    { id: 8, name: "Áo croptop nữ", price: 300000, image: "https://via.placeholder.com/300", category: "nữ", status: "sale" },
-    // Thêm dữ liệu giả để kiểm tra phân trang (tổng cộng 50 sản phẩm)
-    ...Array.from({ length: 42 }, (_, i) => ({
-      id: 9 + i,
-      name: `Sản phẩm ${9 + i}`,
-      price: 200000 + (i * 10000),
-      image: "https://via.placeholder.com/300",
-      category: i % 2 === 0 ? "nam" : "nữ",
-      status: ["có sẵn", "sale", "đặt trước"][i % 3],
-    })),
-  ]);
+  const allProducts = useMemo(() => [
+    // Nữ
+    { id: 1, name: "Váy maxi nữ", price: 800000, image: "https://via.placeholder.com/300/FFC0CB", category: "nữ", gender: "nữ", subCategory: "váy", status: "có sẵn" },
+    { id: 2, name: "Đầm suông", price: 700000, image: "https://via.placeholder.com/300/FF69B4", category: "nữ", gender: "nữ", subCategory: "đầm", status: "có sẵn" },
+    { id: 3, name: "Túi xách da", price: 1100000, image: "https://via.placeholder.com/300/DAA520", category: "phụ kiện", gender: "nữ", subCategory: "túi xách", status: "có sẵn" },
+    { id: 4, name: "Váy hoa Vintage", price: 600000, image: "https://via.placeholder.com/300/BA55D3", category: "nữ", gender: "nữ", subCategory: "váy", status: "có sẵn" },
+    { id: 5, name: "Đầm dạ hội", price: 1500000, image: "https://via.placeholder.com/300/C71585", category: "nữ", gender: "nữ", subCategory: "đầm", status: "có sẵn" },
+    { id: 6, name: "Túi clutch dự tiệc", price: 400000, image: "https://via.placeholder.com/300/FFDAB9", category: "phụ kiện", gender: "nữ", subCategory: "túi xách", status: "hết hàng" },
+    { id: 7, name: "Váy bút chì", price: 550000, image: "https://via.placeholder.com/300/ADD8E6", category: "nữ", gender: "nữ", subCategory: "váy", status: "có sẵn" },
+    { id: 8, name: "Đầm công sở", price: 850000, image: "https://via.placeholder.com/300/DDA0DD", category: "nữ", gender: "nữ", subCategory: "đầm", status: "có sẵn" },
+    { id: 9, name: "Túi đeo chéo", price: 700000, image: "https://via.placeholder.com/300/90EE90", category: "phụ kiện", gender: "nữ", subCategory: "túi xách", status: "có sẵn" },
+    { id: 10, name: "Váy A-line", price: 480000, image: "https://via.placeholder.com/300/FFB6C1", category: "nữ", gender: "nữ", subCategory: "váy", status: "có sẵn" },
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isAdding, setIsAdding] = useState(null);
-  const [imageLoaded, setImageLoaded] = useState({});
-  const [showFilters, setShowFilters] = useState({
-    category: false,
-    price: false,
-    status: false,
-    sort: false,
-  });
+    // Nam
+    { id: 11, name: "Áo sơ mi nam công sở", price: 450000, image: "https://via.placeholder.com/300/4682B4", category: "nam", gender: "nam", subCategory: "áo sơ mi", status: "có sẵn" },
+    { id: 12, name: "Giày da nam", price: 900000, image: "https://via.placeholder.com/300/A52A2A", category: "nam", gender: "nam", subCategory: "giày", status: "có sẵn" },
+    { id: 13, name: "Quần jean slim fit", price: 600000, image: "https://via.placeholder.com/300/5F9EA0", category: "nam", gender: "nam", subCategory: "quần jeans", status: "có sẵn" },
+    { id: 14, name: "Quần short kaki", price: 300000, image: "https://via.placeholder.com/300/8B4513", category: "nam", gender: "nam", subCategory: "quần short", status: "có sẵn" },
+    { id: 15, name: "Áo thun cotton", price: 250000, image: "https://via.placeholder.com/300/2F4F4F", category: "nam", gender: "nam", subCategory: "áo thun", status: "có sẵn" },
+    { id: 16, name: "Áo sơ mi denim", price: 500000, image: "https://via.placeholder.com/300/6A5ACD", category: "nam", gender: "nam", subCategory: "áo sơ mi", status: "có sẵn" },
+    { id: 17, name: "Giày thể thao nam", price: 1200000, image: "https://via.placeholder.com/300/48D1CC", category: "nam", gender: "nam", subCategory: "giày", status: "có sẵn" },
+    { id: 18, name: "Quần jean rách", price: 650000, image: "https://via.placeholder.com/300/778899", category: "nam", gender: "nam", subCategory: "quần jeans", status: "có sẵn" },
+    { id: 19, name: "Quần short jean", price: 320000, image: "https://via.placeholder.com/300/696969", category: "nam", gender: "nam", subCategory: "quần short", status: "có sẵn" },
+    { id: 20, name: "Áo thun polo", price: 350000, image: "https://via.placeholder.com/300/D2B48C", category: "nam", gender: "nam", subCategory: "áo thun", status: "hết hàng" },
+    { id: 21, name: "Áo khoác bomber", price: 950000, image: "https://via.placeholder.com/300/808080", category: "nam", gender: "nam", subCategory: "áo khoác", status: "có sẵn" },
+    { id: 22, name: "Giày boot nam", price: 1500000, image: "https://via.placeholder.com/300/CD853F", category: "nam", gender: "nam", subCategory: "giày", status: "có sẵn" },
+  ], []);
 
   const {
     filteredProducts,
     filters,
-    handleCategoryChange,
+    handleMainCategoryChange,
+    handleSubCategoryChange,
+    handlePriceChange,
     handleStatusChange,
     handleSortChange,
-    handlePriceRangeChange,
-    resetPriceRange,
-    removeFilter,
-  } = useProductFilter(products);
+    resetFilters,
+  } = useProductFilter(allProducts);
 
-  const productsPerPage = 30; // 5 columns x 6 rows = 30 products per page
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-  const currentProducts = useMemo(() => {
-    const startIndex = (currentPage - 1) * productsPerPage;
-    return filteredProducts.slice(startIndex, startIndex + productsPerPage);
-  }, [filteredProducts, currentPage]);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const [isAdding, setIsAdding] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 20; // 5 cột * 4 hàng = 20 sản phẩm mỗi trang
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleAddToCart = useCallback((productId) => {
     setIsAdding(productId);
     setTimeout(() => {
       setIsAdding(null);
-      alert(`Đã thêm ${products.find(p => p.id === productId).name} vào giỏ hàng thành công!`);
+      alert(`Sản phẩm ${productId} đã được thêm vào giỏ hàng!`);
     }, 1000);
-  }, [products]);
+  }, []);
+
+  // Pagination logic
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  const handlePageChange = useCallback((pageNumber) => {
+    setCurrentPage(pageNumber);
+  }, []);
 
   const handlePrevPage = useCallback(() => {
-    setCurrentPage(prev => {
-      const newPage = Math.max(prev - 1, 1);
-      scrollToTop();
-      return newPage;
-    });
+    setCurrentPage(prevPage => Math.max(1, prevPage - 1));
   }, []);
 
   const handleNextPage = useCallback(() => {
-    setCurrentPage(prev => {
-      const newPage = Math.min(prev + 1, totalPages);
-      scrollToTop();
-      return newPage;
-    });
+    setCurrentPage(prevPage => Math.min(totalPages, prevPage + 1));
   }, [totalPages]);
 
-  const handlePageChange = useCallback((page) => {
-    setCurrentPage(page);
-    scrollToTop();
-  }, []);
-
-  const toggleFilter = useCallback((filterName) => {
-    setShowFilters(prev => ({
-      category: false,
-      price: false,
-      status: false,
-      sort: false,
-      [filterName]: !prev[filterName],
-    }));
-  }, []);
-
+  // Ensure page is reset if filters change significantly
   useEffect(() => {
-    currentProducts.forEach(product => {
-      const img = new Image();
-      img.src = product.image;
-      img.onload = () => setImageLoaded(prev => ({ ...prev, [product.id]: true }));
-      img.onerror = () => setImageLoaded(prev => ({ ...prev, [product.id]: true }));
-    });
-  }, [currentProducts]);
+    setCurrentPage(1);
+  }, [filters]);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prev => !prev);
+  };
+
+  // Logic để hiển thị một số nút phân trang xung quanh trang hiện tại
+  const renderPaginationButtons = useCallback(() => {
+    const pageButtons = [];
+    const maxButtons = 5; // Số lượng nút phân trang tối đa hiển thị
+    let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+    let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+    if (endPage - startPage + 1 < maxButtons) {
+      startPage = Math.max(1, endPage - maxButtons + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageButtons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={currentPage === i ? 'active' : ''}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pageButtons;
+  }, [totalPages, currentPage, handlePageChange]);
+
+  const maleSubCategories = useMemo(() => ["áo sơ mi", "giày", "quần jeans", "quần short", "áo thun"], []);
+  const femaleSubCategories = useMemo(() => ["váy", "đầm", "túi xách"], []);
 
   return (
     <div className="home">
       <Header />
-      <div className="product-list">
-        <div className="filter-section">
-          {filters.activeFilters.length > 0 && (
-            <div className="active-filters">
-              {filters.activeFilters.map((filter, index) => (
-                <span key={index} className="active-filter" onClick={() => removeFilter(filter)}>
-                  {filter} <span className="remove">×</span>
-                </span>
-              ))}
-            </div>
-          )}
-          <div className="filters-horizontal">
+      <div className="product-list-page">
+        <h1>Sản phẩm</h1>
+        <div className="filter-sort-container">
+          {/* Filters Section (Left Sidebar) */}
+          <div className="filters-section">
+            <h3>Bộ lọc</h3>
             <div className="filter-group">
-              <button onClick={() => toggleFilter('category')} className="filter-toggle">
-                Danh mục <span className="arrow">▼</span>
-              </button>
-              {showFilters.category && (
-                <div className="filter-panel">
-                  <div className="filter-content">
-                    <label><input type="checkbox" value="nam" checked={filters.categories.includes('nam')} onChange={handleCategoryChange} /> Nam</label>
-                    <label><input type="checkbox" value="nữ" checked={filters.categories.includes('nữ')} onChange={handleCategoryChange} /> Nữ</label>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="filter-group">
-              <button onClick={() => toggleFilter('price')} className="filter-toggle">
-                Giá <span className="arrow">▼</span>
-              </button>
-              {showFilters.price && (
-                <div className="filter-panel">
-                  <div className="filter-content">
-                    <Slider
-                      range
-                      min={0}
-                      max={2000000}
-                      step={10000}
-                      value={[filters.minPrice, filters.maxPrice]}
-                      onChange={handlePriceRangeChange}
-                      style={{ width: '200px', margin: '10px 0' }}
-                    />
-                    <div className="price-range-display">
-                      <span>Min: {filters.minPrice.toLocaleString()}đ - Max: {filters.maxPrice.toLocaleString()}đ</span>
-                    </div>
-                    <div className="price-control">
-                      <span>Giá: {filters.minPrice.toLocaleString()}đ - {filters.maxPrice.toLocaleString()}đ</span>
-                      {(filters.minPrice !== 0 || filters.maxPrice !== 2000000) && (
-                        <button onClick={resetPriceRange} className="reset-button">Đặt lại</button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="filter-group">
-              <button onClick={() => toggleFilter('status')} className="filter-toggle">
-                Tình trạng <span className="arrow">▼</span>
-              </button>
-              {showFilters.status && (
-                <div className="filter-panel">
-                  <div className="filter-content">
-                    <label><input type="checkbox" value="tất cả" checked={filters.statuses.length === 0} onChange={() => setFilters(prev => ({ ...prev, statuses: [] }))} /> Tất cả</label>
-                    <label><input type="checkbox" value="sale" checked={filters.statuses.includes('sale')} onChange={handleStatusChange} /> Sale</label>
-                    <label><input type="checkbox" value="có sẵn" checked={filters.statuses.includes('có sẵn')} onChange={handleStatusChange} /> Có sẵn</label>
-                    <label><input type="checkbox" value="đặt trước" checked={filters.statuses.includes('đặt trước')} onChange={handleStatusChange} /> Đặt trước</label>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="filter-group result">
-              <span>{filteredProducts.length} kết quả</span>
-            </div>
-            <div className="filter-group">
-              <button onClick={() => toggleFilter('sort')} className="filter-toggle">
-                Sắp xếp: {filters.sortBy === '' ? 'Mặc định' : filters.sortBy === 'newest' ? 'Mới nhất' : filters.sortBy === 'priceAsc' ? 'Giá: Tăng dần' : 'Giá: Giảm dần'} <span className="arrow">▼</span>
-              </button>
-              {showFilters.sort && (
-                <div className="filter-panel">
-                  <div className="filter-content">
-                    <label><input type="radio" name="sort" value="" checked={!filters.sortBy} onChange={handleSortChange} /> Mặc định</label>
-                    <label><input type="radio" name="sort" value="newest" checked={filters.sortBy === 'newest'} onChange={handleSortChange} /> Mới nhất</label>
-                    <label><input type="radio" name="sort" value="priceAsc" checked={filters.sortBy === 'priceAsc'} onChange={handleSortChange} /> Tăng dần</label>
-                    <label><input type="radio" name="sort" value="priceDesc" checked={filters.sortBy === 'priceDesc'} onChange={handleSortChange} /> Giảm dần</label>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="products-section">
-            <div className="products">
-              {currentProducts.map(product => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  isAdding={isAdding}
-                  handleAddToCart={handleAddToCart}
-                  imageLoaded={imageLoaded}
-                  setImageLoaded={setImageLoaded}
-                />
-              ))}
-            </div>
-            <div className="pagination">
-              <button onClick={handlePrevPage} disabled={currentPage === 1}>
-                Trước
-              </button>
-              {Array.from({ length: totalPages }, (_, index) => (
+              <h4>Danh mục</h4>
+              <div className="main-category-options">
                 <button
-                  key={index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                  className={currentPage === index + 1 ? 'active' : ''}
+                  className={`main-category-button ${filters.mainCategory === 'nam' ? 'active' : ''}`}
+                  onClick={() => handleMainCategoryChange('nam')}
                 >
-                  {index + 1}
+                  Nam
                 </button>
-              ))}
-              <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Sau
+                <button
+                  className={`main-category-button ${filters.mainCategory === 'nữ' ? 'active' : ''}`}
+                  onClick={() => handleMainCategoryChange('nữ')}
+                >
+                  Nữ
+                </button>
+              </div>
+
+              {/* Sub-categories for Male */}
+              {filters.mainCategory === 'nam' && (
+                <div className="sub-category-options">
+                  {maleSubCategories.map(subCat => (
+                    <label key={subCat}>
+                      <input
+                        type="checkbox"
+                        value={subCat}
+                        checked={filters.subCategories.includes(subCat)}
+                        onChange={() => handleSubCategoryChange(subCat)}
+                      /> {subCat.charAt(0).toUpperCase() + subCat.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              {/* Sub-categories for Female */}
+              {filters.mainCategory === 'nữ' && (
+                <div className="sub-category-options">
+                  {femaleSubCategories.map(subCat => (
+                    <label key={subCat}>
+                      <input
+                        type="checkbox"
+                        value={subCat}
+                        checked={filters.subCategories.includes(subCat)}
+                        onChange={() => handleSubCategoryChange(subCat)}
+                      /> {subCat.charAt(0).toUpperCase() + subCat.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="filter-group">
+              <h4>Giá</h4>
+              <Slider
+                range
+                min={0}
+                max={2000000}
+                step={50000}
+                value={[filters.minPrice, filters.maxPrice]}
+                onChange={handlePriceChange}
+                tipFormatter={value => `${value.toLocaleString()}đ`}
+              />
+              <div className="price-range">
+                <span>{filters.minPrice.toLocaleString()}đ</span> - <span>{filters.maxPrice.toLocaleString()}đ</span>
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <h4>Tình trạng</h4>
+              <label>
+                <input
+                  type="checkbox"
+                  value="có sẵn"
+                  checked={filters.statuses.includes('có sẵn')}
+                  onChange={() => handleStatusChange('có sẵn')}
+                /> Có sẵn
+              </label>
+              <label>
+                <input
+                  type="checkbox"
+                  value="hết hàng"
+                  checked={filters.statuses.includes('hết hàng')}
+                  onChange={() => handleStatusChange('hết hàng')}
+                /> Hết hàng
+              </label>
+            </div>
+            <button onClick={resetFilters} className="reset-filters-button">Đặt lại bộ lọc</button>
+          </div>
+
+          {/* Products Content (Main area) */}
+          <div className="products-content">
+            <div className="sort-by-dropdown-container" onClick={toggleDropdown}>
+              <button className="dropdown-button">
+                Sắp xếp theo: {
+                  filters.sortBy === 'newest' ? 'Mới nhất' :
+                    filters.sortBy === 'priceAsc' ? 'Giá tăng dần' :
+                      filters.sortBy === 'priceDesc' ? 'Giá giảm dần' : 'Mặc định'
+                }
               </button>
+              {isDropdownOpen && (
+                <div className="dropdown-content" onClick={e => e.stopPropagation()}> {/* Prevent closing when clicking inside */}
+                  <label><input type="radio" name="sort" value="" checked={filters.sortBy === ''} onChange={handleSortChange} /> Mặc định</label>
+                  <label><input type="radio" name="sort" value="newest" checked={filters.sortBy === 'newest'} onChange={handleSortChange} /> Mới nhất</label>
+                  <label><input type="radio" name="sort" value="priceAsc" checked={filters.sortBy === 'priceAsc'} onChange={handleSortChange} /> Giá tăng dần</label>
+                  <label><input type="radio" name="sort" value="priceDesc" checked={filters.sortBy === 'priceDesc'} onChange={handleSortChange} /> Giá giảm dần</label>
+                </div>
+              )}
+            </div>
+            <div className="products-grid-container">
+              <div className="products">
+                {currentProducts.map(product => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    isAdding={isAdding}
+                    handleAddToCart={handleAddToCart}
+                    imageLoaded={imageLoaded}
+                    setImageLoaded={setImageLoaded}
+                  />
+                ))}
+              </div>
+              <div className="pagination">
+                <button onClick={handlePrevPage} disabled={currentPage === 1}>
+                  Trước
+                </button>
+                {renderPaginationButtons()}
+                <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+                  Sau
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
+// src/components/ProductCard.jsx
 import React, { useState } from 'react';
-import { Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './ProductCard.css';
 
@@ -44,9 +44,7 @@ const ProductCard = ({ product, isAdding, handleAddToCart, imageLoaded, setImage
         </div>
         <div className="product-info">
           <h3 className="product-name">{product.name}</h3>
-          <p className="product-price">
-            {formatPrice(product.price)}
-          </p>
+          <p className="product-price">{formatPrice(product.price)}</p>
         </div>
       </Link>
     </div>

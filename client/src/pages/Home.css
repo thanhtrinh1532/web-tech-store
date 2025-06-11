@@ -241,16 +241,18 @@ hr {
   gap: 20px;
   margin-bottom: 40px;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .gender-image {
   flex: 1;
   max-width: 400px;
+  min-width: 200px;
 }
 
 .gender-image img {
   width: 100%;
-  height: 872px;
+  height: auto;
   object-fit: cover;
 }
 
@@ -294,6 +296,7 @@ hr {
   gap: 20px;
   margin-bottom: 40px;
   width: 100%;
+  flex-wrap: wrap;
   justify-content: center;
 }
 
@@ -318,13 +321,13 @@ hr {
   }
   .gender-image {
     max-width: 100%;
-    height: 300px;
+    height: auto;
   }
   .gender-image img {
-    height: 300px;
+    height: auto;
   }
   .products[style*="grid-template-columns: repeat(5, 1fr)"] {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
   .category-sections {
     flex-direction: column;
