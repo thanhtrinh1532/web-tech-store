@@ -8,7 +8,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ContactPage from './pages/ContactPage';
 import OrderPage from './pages/OrderPage';
-import AdminPage from './pages/AdminPage';
+import AdminPage from './pages/AdminPage.jsx';
 import './App.css';
 
 function App() {
@@ -17,8 +17,8 @@ function App() {
       <div className="app">
         <header>
           <nav>
-            <a href="/">Home</a> | <a href="/products">Products</a> | <a href="/cart">Cart</a> | 
-            <a href="/checkout">Checkout</a> | <a href="/login">Login</a> | <a href="/register">Register</a> | 
+            <a href="/">Home</a> | <a href="/products">Products</a> | <a href="/cart">Cart</a> |
+            <a href="/checkout">Checkout</a> | <a href="/login">Login</a> | <a href="/register">Register</a> |
             <a href="/contact">Contact</a> | <a href="/orders">Orders</a> | <a href="/admin">Admin</a>
           </nav>
         </header>

@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 const productRoutes = require('./routes/productRoutes');
+const categoriesRoutes = require('./routes/categoriesRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const cartRoutes = require('./routes/cartRoutes');
@@ -25,6 +26,7 @@ const aiRoutes = require('./routes/aiRoutes');
 
 // Route middleware
 app.use('/api/products', productRoutes);
+app.use('/api/categories', categoriesRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/cart', cartRoutes);

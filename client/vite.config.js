@@ -5,9 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173, // Cổng mặc định của Vite
+    port: 5173,
     hmr: {
-      overlay: true // Hiển thị overlay lỗi (như bạn thấy)
+      overlay: true
+    },
+    proxy: {
+      '/api': 'http://localhost:5000' // Đổi 5173 thành port backend của bạn nếu khác
     }
   }
 })
