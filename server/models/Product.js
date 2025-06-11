@@ -55,4 +55,25 @@ const Product = sequelize.define('Product', {
 
 });
 
+Product.findWithFilters = async (filters) => {
+  const { Op } = require('sequelize');
+  const where = {};
+
+  if (filters.name) {
+    where.name = { [Op.like]: `%${filters.name}%` };
+  }
+  if (filters.category_id) {
+    where.category_id = filters.category_id;
+  }
+  if (filters.price_min) {
+    where.price = { ...(where.price || {}), [Op.gte]: Number(filters.price_min) };
+  }
+  if (filters.price_max) {
+    where.price = { ...(where.price || {}), [Op.lte]: Number(filters.price_max) };
+  }
+
+  return await Product.findAll({ where });
+};
+
+
 module.exports = { Product };

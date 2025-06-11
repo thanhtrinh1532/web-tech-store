@@ -33,6 +33,34 @@ const AdminController = {
       res.status(500).json({ error: 'Error fetching products', details: error.message });
     }
   },
+
+  //Thêm sản phẩm mới
+  createProduct: async (req, res) => {
+    try {
+      const { name, description, thumbnail, price, quantity, category_id, view } = req.body;
+
+      // Kiểm tra các trường bắt buộc
+      if (!name || !price || !quantity || !category_id) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      // Tạo sản phẩm mới bằng Sequelize
+      const newProduct = await Product.create({
+        name,
+        description,
+        thumbnail,
+        price,
+        quantity,
+        category_id,
+        view: view || 0
+      });
+
+      res.status(201).json({ message: 'Product created successfully', product: newProduct });
+    } catch (error) {
+      res.status(500).json({ error: 'Error creating product', details: error.message });
+    }
+  },
+
   // Cập nhật người dùng
   updateUser: async (req, res) => {
     try {
@@ -66,16 +94,33 @@ const AdminController = {
   updateProduct: async (req, res) => {
     try {
       const { name, description, thumbnail, price, quantity, category_id, view } = req.body;
-      const success = await Product.update(req.params.id, name, description, thumbnail, price, quantity, category_id, view);
-      if (!success) {
+
+      // Kiểm tra nếu ID không được cung cấp
+      if (!req.params.id || isNaN(req.params.id)) {
+        return res.status(400).json({ error: 'Valid product ID is required' });
+      }
+
+      // Kiểm tra các trường bắt buộc
+      if (!name || !price || !category_id) {
+        return res.status(400).json({ error: 'Name, price, and category_id are required' });
+      }
+
+      const productId = parseInt(req.params.id);
+      const [affectedRows] = await Product.update(
+        { name, description, thumbnail, price, quantity, category_id, view },
+        { where: { id: productId } }
+      );
+
+      if (affectedRows === 0) {
         return res.status(404).json({ error: 'Product not found' });
       }
+
       res.status(200).json({ message: 'Product updated successfully' });
     } catch (error) {
+      console.error('Error updating product:', error);
       res.status(500).json({ error: 'Error updating product', details: error.message });
     }
   },
-
   // Xóa người dùng
   deleteUser: async (req, res) => {
     try {
