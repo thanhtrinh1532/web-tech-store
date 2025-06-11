@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import './ContactPage.css';
 import { useNavigate } from 'react-router-dom';
@@ -100,22 +99,8 @@ const ContactPage = () => {
         </form>
         {response && <p className="response">{response}</p>}
       </div>
-=======
-import React from 'react';
-import './CartPage.css'; // Tạo file CSS nếu cần
-
-const CartPage = () => {
-  return (
-    <div>
-      <h1>Contact Page</h1>
-      <p>This is the admin page.</p>
->>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default ContactPage;
-=======
-export default CartPage; // Export mặc định
->>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9

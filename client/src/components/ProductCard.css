@@ -1,50 +1,31 @@
-/* CSS Variables for consistent theming */
-:root {
-  --primary-color: #ff6b6b;
-  --primary-hover: #e55a5a;
-  --border-color: #ddd;
-  --text-color: #333;
-  --secondary-text: #ff6b6b;
-  --disabled-color: #cccccc;
-  --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.product-item {
-  background-color: #fff;
-  border: 1px solid var(--border-color);
-  text-align: center;
-  position: relative;
+.product-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.3s ease;
-  width: 200px; /* Kích thước cố định */
-  height: 350px; /* Kích thước cố định */
-  display: flex;
-  flex-direction: column;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  text-align: center;
+  width: 200px;
 }
 
-.product-item:hover {
+.product-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .product-link {
   text-decoration: none;
   color: inherit;
   display: block;
-  flex: 1;
 }
 
 .product-image {
   position: relative;
-  width: 100%;
-  height: 200px; /* Chiều cao cố định cho ảnh */
+  height: 250px;
   overflow: hidden;
 }
 
 .product-image img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -55,10 +36,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid var(--primary-color);
+  width: 30px;
+  height: 30px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #ff6b6b;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -72,79 +53,85 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 18px;
-  color: white;
-  text-shadow: 0 0 2px black; /* Viền đen */
+  font-size: 20px;
+  color: #ccc;
   cursor: pointer;
   transition: color 0.3s ease;
+  z-index: 10;
 }
 
 .heart-icon.favorited {
-  color: var(--primary-color);
-  text-shadow: none; /* Loại bỏ viền khi yêu thích */
+  color: #ff6b6b;
 }
 
-.product-info {
-  padding: 8px;
-  flex: 1;
+.product-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.3s;
 }
 
-.product-info h4 {
-  margin: 3px 0;
-  font-size: 14px;
-  color: var(--text-color);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-decoration: none; /* Không gạch chân */
-}
-
-.product-info .price {
-  color: var(--text-color); /* Màu đen */
-  font-weight: bold;
-  font-size: 12px;
-  margin: 3px 0;
-  text-decoration: none; /* Không gạch chân */
-}
-
-.product-info .status {
-  color: var(--text-color);
-  font-size: 12px;
-  margin: 3px 0;
+.product-image:hover .product-actions {
+  transform: translateY(0);
 }
 
 .add-to-cart {
-  width: 100%;
-  height: 32px;
-  background-color: var(--primary-color);
+  background-color: #ff6b6b;
   color: white;
-  padding: 6px;
-  font-size: 12px;
-  cursor: pointer;
   border: none;
-  z-index: 10;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  position: absolute;
-  top: -40px; /* Đặt trên tên sản phẩm */
-  left: 0;
-}
-
-.product-item:hover .add-to-cart {
-  opacity: 1;
-  visibility: visible;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
 }
 
 .add-to-cart:hover {
-  background-color: var(--primary-hover);
+  background-color: #e55a5a;
 }
 
 .add-to-cart:disabled {
-  background-color: var(--disabled-color);
+  background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.product-info {
+  padding: 10px;
+}
+
+.product-name {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  font-size: 14px;
+  color: #333;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+@media (max-width: 576px) {
+  .product-image {
+    height: 180px;
+  }
+  .product-card {
+    width: 150px;
+  }
+  .product-name {
+    font-size: 12px;
+  }
+  .product-price {
+    font-size: 12px;
+  }
 }

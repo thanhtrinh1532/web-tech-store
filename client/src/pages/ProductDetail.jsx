@@ -1,121 +1,113 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import './ProductDetail.css';
 
+/**
+ * ProductDetail component displays detailed information for a single product.
+ */
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Temporary product data
+  const products = [
+    { id: 1, name: "Steady coats", price: 129000, image: "https://via.placeholder.com/300", description: "Lorem ipsum is simply dummy text of the printing and typesetting industry.", status: "có sẵn" },
+    { id: 2, name: "Áo thun nam đen", price: 250000, image: "https://via.placeholder.com/300", category: "nam", status: "có sẵn", description: "Áo thun nam chất liệu cotton cao cấp, thoáng mát." },
+    { id: 3, name: "Áo sơ mi nữ trắng", price: 450000, image: "https://via.placeholder.com/300", category: "nữ", status: "sale", description: "Áo sơ mi nữ phong cách tối giản." },
+    { id: 4, name: "Quần jeans nam", price: 600000, image: "https://via.placeholder.com/300", category: "nam", status: "đặt trước", description: "Quần jeans nam form chuẩn." },
+    { id: 5, name: "Váy maxi nữ", price: 800000, image: "https://via.placeholder.com/300", category: "nữ", status: "có sẵn", description: "Váy maxi nữ dài nhẹ nhàng." },
+    // Thêm dữ liệu giả
+    ...Array.from({ length: 45 }, (_, i) => ({
+      id: 6 + i,
+      name: `Sản phẩm ${6 + i}`,
+      price: 200000 + (i * 10000),
+      image: "https://via.placeholder.com/300",
+      status: ["có sẵn", "sale", "đặt trước"][i % 3],
+      description: `Mô tả cho sản phẩm ${6 + i}.`,
+    })),
+  ];
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await fetch(`http://localhost/api/products.php?id=${id}`);
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error('Fetch product error:', error);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+    const foundProduct = products.find(p => p.id === parseInt(productId));
+    setProduct(foundProduct || null);
+  }, [productId]);
 
-  const handleAddToCart = () => {
-    if (product && selectedSize && selectedColor) {
-      alert(`Đã thêm ${quantity} ${product.name} (Size: ${selectedSize}, Color: ${selectedColor}) vào giỏ hàng!`);
-    } else {
-      alert('Vui lòng chọn kích thước và màu sắc!');
+  const handleAddToCart = useCallback(() => {
+    if (!isAdding) {
+      setIsAdding(true);
+      setTimeout(() => {
+        setIsAdding(false);
+        alert(`Đã thêm ${product.name} vào giỏ hàng thành công!`);
+      }, 1000);
     }
-  };
+  }, [isAdding, product]);
 
-  if (!product) return <div>Loading...</div>;
+  const handleBuyNow = useCallback(() => {
+    alert(`Mua ngay ${product.name}!`);
+  }, [product]);
+
+  const toggleFavorite = useCallback(() => {
+    setIsFavorited(prev => !prev);
+  }, []);
+
+  if (!product) {
+    return (
+      <div className="home">
+        <Header />
+        <div className="product-detail">
+          <p>Sản phẩm không tồn tại.</p>
+          <Link to="/products">Quay lại danh sách sản phẩm</Link>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
-    <div className="product-detail-page">
+    <div className="home">
       <Header />
-      <div className="product-detail-container">
-        <div className="product-image">
-          <img src={product.image} alt={product.name} />
-        </div>
-        <div className="product-info">
-          <h1>{product.name}</h1>
-          <p className="price">{product.price.toLocaleString()}đ</p>
-          <p className="buyers">Hurry up! {product.buyers || 0} people have been bought this</p>
-          <div className="options">
-            <div className="size-option">
-              <h3>Size</h3>
-              <div className="size-buttons">
-                {(product.sizes || []).map(size => (
-                  <button
-                    key={size}
-                    className={selectedSize === size ? 'active' : ''}
-                    onClick={() => setSelectedSize(size)}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="color-option">
-              <h3>Color</h3>
-              <div className="color-buttons">
-                {(product.colors || []).map(color => (
-                  <button
-                    key={color}
-                    className={`color-btn ${selectedColor === color ? 'active' : ''}`}
-                    style={{ backgroundColor: color.toLowerCase() }}
-                    onClick={() => setSelectedColor(color)}
-                  ></button>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="quantity">
-            <h3>Số lượng</h3>
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+      <div className="product-detail">
+        <div className="product-detail-container">
+          <div className="product-image">
+            {!imageLoaded && <div className="spinner" />}
+            <img
+              src={product.image}
+              alt={product.name}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(true)}
+              style={{ display: imageLoaded ? 'block' : 'none' }}
             />
+            <span className={`heart-icon ${isFavorited ? 'favorited' : ''}`} onClick={toggleFavorite}>
+              ♥
+            </span>
           </div>
-          <button className="buy-now" onClick={handleAddToCart}>
-            Mua ngay
-          </button>
-          <div className="description">
-            <h3>Chi tiết sản phẩm</h3>
-            <p>{product.description || 'Không có mô tả'}</p>
-          </div>
-          <div className="social-icons">
-            <span>📩</span>
-            <span>💾</span>
-            <span>👍</span>
-            <span>👎</span>
+          <div className="product-info">
+            <h1>{product.name}</h1>
+            <p className="price">{product.price.toLocaleString()}đ</p>
+            <p className="status">Hurry! Over 3 people have this in their carts</p>
+            <p className="description">{product.description}</p>
+            <button
+              className="add-to-cart"
+              onClick={handleAddToCart}
+              disabled={isAdding}
+            >
+              {isAdding ? 'Đang thêm...' : 'Thêm vào giỏ hàng'}
+            </button>
+            <button className="buy-now" onClick={handleBuyNow}>
+              Mua ngay
+            </button>
+            <Link to="/products" className="back-link">Quay lại danh sách sản phẩm</Link>
           </div>
         </div>
       </div>
       <Footer />
-=======
-import React from 'react';
-import './ProductDetail.css'; // Tạo file CSS nếu cần
-
-const ProductDetail = () => {
-  return (
-    <div>
-      <h1>ProductDetail</h1>
-      <p>Chi tiết sản phẩm</p>
->>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default ProductDetail;
-=======
-export default ProductDetail; // Export mặc định
->>>>>>> dae1b6d2007ad233449e04af799bf4543caeadc9

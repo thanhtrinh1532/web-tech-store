@@ -288,6 +288,28 @@ hr {
   justify-content: center; /* Căn giữa các product card */
 }
 
+/* New styles for category-sections and category-column */
+.category-sections {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 40px;
+  width: 100%;
+  justify-content: center;
+}
+
+.category-column {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+  text-align: center;
+}
+
+.category-column h3 {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 10px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .gender-section {
@@ -304,6 +326,13 @@ hr {
   .products[style*="grid-template-columns: repeat(5, 1fr)"] {
     grid-template-columns: repeat(3, 1fr);
   }
+  .category-sections {
+    flex-direction: column;
+    align-items: center;
+  }
+  .category-column {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {
@@ -313,6 +342,13 @@ hr {
   .products[style*="grid-template-columns: repeat(5, 1fr)"] {
     grid-template-columns: repeat(2, 1fr);
   }
+  .category-sections {
+    flex-direction: column;
+    align-items: center;
+  }
+  .category-column {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -321,6 +357,13 @@ hr {
   .gender-image img { height: 200px; }
   .products[style*="grid-template-columns: repeat(5, 1fr)"] {
     grid-template-columns: 1fr;
+  }
+  .category-sections {
+    flex-direction: column;
+    align-items: center;
+  }
+  .category-column {
+    max-width: 100%;
   }
 
   .home-container {

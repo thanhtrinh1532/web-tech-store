@@ -166,12 +166,16 @@ const ProductList = () => {
     removeFilter,
   } = useProductFilter(products);
 
-  const productsPerPage = 48; // 6 cột x 8 hàng
+  const productsPerPage = 30; // 5 columns x 6 rows = 30 products per page
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const currentProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * productsPerPage;
     return filteredProducts.slice(startIndex, startIndex + productsPerPage);
   }, [filteredProducts, currentPage]);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleAddToCart = useCallback((productId) => {
     setIsAdding(productId);
@@ -182,12 +186,25 @@ const ProductList = () => {
   }, [products]);
 
   const handlePrevPage = useCallback(() => {
-    setCurrentPage(prev => Math.max(prev - 1, 1));
+    setCurrentPage(prev => {
+      const newPage = Math.max(prev - 1, 1);
+      scrollToTop();
+      return newPage;
+    });
   }, []);
 
   const handleNextPage = useCallback(() => {
-    setCurrentPage(prev => Math.min(prev + 1, totalPages));
+    setCurrentPage(prev => {
+      const newPage = Math.min(prev + 1, totalPages);
+      scrollToTop();
+      return newPage;
+    });
   }, [totalPages]);
+
+  const handlePageChange = useCallback((page) => {
+    setCurrentPage(page);
+    scrollToTop();
+  }, []);
 
   const toggleFilter = useCallback((filterName) => {
     setShowFilters(prev => ({
@@ -319,7 +336,7 @@ const ProductList = () => {
               {Array.from({ length: totalPages }, (_, index) => (
                 <button
                   key={index + 1}
-                  onClick={() => setCurrentPage(index + 1)}
+                  onClick={() => handlePageChange(index + 1)}
                   className={currentPage === index + 1 ? 'active' : ''}
                 >
                   {index + 1}
@@ -332,7 +349,7 @@ const ProductList = () => {
           </div>
         </div>
       </div>
-    <Footer />
+      <Footer />
     </div>
   );
 };

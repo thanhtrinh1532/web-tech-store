@@ -27,13 +27,13 @@
 .logo a {
   font-size: 24px;
   font-weight: bold;
-  text-decoration: none;
   color: #ff6b6b;
   transition: color 0.3s ease;
 }
 
 .logo a:hover {
   color: #e55a5a;
+  text-decoration: none;
 }
 
 .nav {
@@ -99,6 +99,7 @@
 
 .icon-button:hover {
   background-color: #ff6b6b;
+  text-decoration: none;
 }
 
 .icon-button .icon {
